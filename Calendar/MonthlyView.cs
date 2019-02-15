@@ -10,11 +10,16 @@ using System.Windows.Forms;
 
 namespace Calendar
 {
-    public partial class Form1 : Form
+    public partial class MonthlyView : Form
     {
-        public Form1()
+        public MonthlyView()
         {
             InitializeComponent();
+        }
+
+        private void MonthlyView_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
