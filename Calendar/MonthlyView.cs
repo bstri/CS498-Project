@@ -17,9 +17,15 @@ namespace Calendar
             InitializeComponent();
         }
 
-        private void MonthlyView_Load(object sender, EventArgs e)
+        public void SetStartDay(int dayOfWeek)
         {
 
         }
+
+        public void SetMonthLength(int len) // probably just use a property, but doesn't really matter
+        {
+
+        }
+        
     }
 }
