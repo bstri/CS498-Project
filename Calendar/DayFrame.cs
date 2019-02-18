@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Diagnostics;
 
 namespace Calendar
 {
@@ -14,10 +15,13 @@ namespace Calendar
 
         public DayFrame()
         {
+            Dock = DockStyle.Fill;
+
             dayLabel = new Label()
             {
                 Location = new Point(0, 0),
-                Size = new Size(15, 15)
+                Size = new Size(15, 15),
+                AutoSize = true,
             };
             Controls.Add(dayLabel);
 
@@ -39,7 +43,7 @@ namespace Calendar
         }
 
         private string[] appointments;
-        private List<Label> apptLabels;
+        private List<Label> apptLabels = new List<Label>();
         public void SetAppointments(string[] appts)
         {
             if (appts.SequenceEqual(appointments))
@@ -63,7 +67,7 @@ namespace Calendar
 
         private void expandDay()
         {
-
+            Debug.WriteLine("Day clicked");
         }
     }
 }
