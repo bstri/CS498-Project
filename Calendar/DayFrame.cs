@@ -19,7 +19,7 @@ namespace Calendar
                 Location = new Point(0, 0),
                 Size = new Size(15, 15)
             };
-            
+            Controls.Add(dayLabel);
 
             // expand this day when clicked
             this.MouseClick += new MouseEventHandler((sender, e) => { expandDay(); });
@@ -38,9 +38,27 @@ namespace Calendar
             }
         }
 
-        public void AddAppointment()
+        private string[] appointments;
+        private List<Label> apptLabels;
+        public void SetAppointments(string[] appts)
         {
+            if (appts.SequenceEqual(appointments))
+                return;
+            foreach(Label appt in apptLabels)
+            {
+                Controls.Remove(appt);
+            }
+            appointments = appts;
+            foreach(string appt in appts)
+            {
+                Label lAppt = new Label()
+                {
+                    Text = appt,
 
+                };
+                Controls.Add(lAppt);
+                apptLabels.Add(lAppt);
+            }
         }
 
         private void expandDay()
