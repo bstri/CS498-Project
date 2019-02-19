@@ -19,15 +19,13 @@ var FirstDay = new DateTime(now.Year, now.Month, 1);
 var LastDay = FirstDay.AddMonths(1).AddDays(-1);
 
 string firstDate = FirstDay.ToString("dddd");
-int lastDateNum = Int32.Parse(LastDay.ToString("dd"));
+string last = FirstDay.ToString("dd");
 //On Load sets the first date of the current month
 
 Globals.currentMonth = Int32.Parse(month);
 Globals.currentMonth--;
-Globals.currentMonth = Int32.Parse(month);
-Globals.currentMonth--;
 Globals.first = firstDate;
-Globals.currMonLen = LastDay;
+Globals.currMonLen= Int32.Parse(last);
 //Changes label to be on month, can change or delete later            
 MonthLabel.Text = monthsArr[Globals.currentMonth];
 }
