@@ -14,12 +14,60 @@ namespace Calendar
     {
         private int gridSize;
         private DayFrame[] dayFrames;
+        String[] monthsArr = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+        public DateTime current;
+        public int numWeek(DateTime now)
+        {
+            var FirstDay = new DateTime(now.Year, now.Month, 1);
+            string strDate = FirstDay.ToString("dddd");
+            string[] dayWeek = { "Sunday", "Monday", "Tuesday", "Wedndesday", "Thursday", "Friday", "Saturday" };
+            
+            int iter = 0;
+            while (strDate != dayWeek[iter])
+                iter++;
+            return iter;
+        }
+        public int monLen(DateTime now)
+        {
+            var FirstDay = new DateTime(now.Year, now.Month, 1);
+            var LastDay = FirstDay.AddMonths(1).AddDays(-1);
+            string last = LastDay.ToString("dd");
+            return Int32.Parse(last);
+        }
+        public int currMonth(DateTime now)
+        {
+            return Int32.Parse(current.ToString("MM"))-1;
+        }
+        public int monPrev(DateTime now)
+        {
+            var FirstDay = new DateTime(now.Year, now.Month, 1);
+            var prevMonth = FirstDay.AddDays(-1);
+            string prevLast = prevMonth.ToString("dd");
+            int prevLen = Int32.Parse(prevLast);
+            return prevLen;
+        }
+        //public void iniDate(DateTime now)
+        //{
+        //    //Grabs month string 
+        //    //string month = DateTime.Now.ToString("MMMM");
+        //    //var FirstDay = new DateTime(now.Year, now.Month, 1);
+        //    //string firstDate = FirstDay.ToString("dddd");
+        //    ////Gets how long a month is
+        //    //var LastDay = FirstDay.AddMonths(1).AddDays(-1);
+        //    //var prevMonth = FirstDay.AddDays(-1);
+        //    //string last = LastDay.ToString("dd");
+        //    //int len = Int32.Parse(last);
 
+            
+
+            
+        //}
         public MonthlyView()
         {
             InitializeComponent();
 
             gridSize = DayGrid.ColumnCount * DayGrid.RowCount;
+            current = DateTime.Now;
             dayFrames = new DayFrame[gridSize];
             for(int r = 0; r < DayGrid.RowCount; r++)
             {
@@ -32,13 +80,12 @@ namespace Calendar
                     DayGrid.SetColumn(d, c);
                 }
             }
-
-            SetMonth("February", 5, 28, 31);
+            SetMonth(currMonth(current), numWeek(current), monLen(current), monPrev(current));
         }
 
-        public void SetMonth(string mName, int dayOfWeek, int mLen, int prevMLen)
+        public void SetMonth(int mNum, int dayOfWeek, int mLen, int prevMLen)
         {
-            MonthLabel.Text = mName;
+            MonthLabel.Text = monthsArr[mNum];
             int nextMonthStart = mLen + dayOfWeek;
             int j = 1;
             DayFrame d;
@@ -66,6 +113,18 @@ namespace Calendar
                 j--;
             }
         }
-        
+
+        private void PreviousMonthButton_Click(object sender, EventArgs e)
+        {
+            current = current.AddMonths(-1);
+            SetMonth(currMonth(current), numWeek(current), monLen(current), monPrev(current));
+        }
+
+        private void NextMonthButton_Click(object sender, EventArgs e)
+        {
+            DateTime newcurr = current;
+            current = current.AddMonths(1);
+            SetMonth(currMonth(current), numWeek(current), monLen(current), monPrev(current));
+        }
     }
 }
