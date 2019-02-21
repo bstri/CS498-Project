@@ -20,11 +20,15 @@ namespace Calendar
         {
             var FirstDay = new DateTime(now.Year, now.Month, 1);
             string strDate = FirstDay.ToString("dddd");
-            string[] dayWeek = { "Sunday", "Monday", "Tuesday", "Wedndesday", "Thursday", "Friday", "Saturday" };
+            string[] dayWeek = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
             
             int iter = 0;
             while (strDate != dayWeek[iter])
+            {
                 iter++;
+                //MessageBox.Show(iter.ToString());
+            }
+                
             return iter;
         }
         public int monLen(DateTime now)
@@ -122,7 +126,7 @@ namespace Calendar
 
         private void NextMonthButton_Click(object sender, EventArgs e)
         {
-            DateTime newcurr = current;
+           
             current = current.AddMonths(1);
             SetMonth(currMonth(current), numWeek(current), monLen(current), monPrev(current));
         }
