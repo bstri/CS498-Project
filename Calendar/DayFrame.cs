@@ -58,7 +58,11 @@ namespace Calendar
                 Label lAppt = new Label()
                 {
                     Text = appt,
-
+                    AutoEllipsis = true,
+                    AutoSize = false,
+                    //Cell = based on date
+                    //Color = chosen color
+                    MinimumSize = new Size(100, 0)
                 };
                 Controls.Add(lAppt);
                 apptLabels.Add(lAppt);
