@@ -14,38 +14,40 @@ namespace Calendar
     {
         private int gridSize;
         private DayFrame[] dayFrames;
-        String[] monthsArr = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+        //String[] monthsArr = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
         public DateTime current;
         public int numWeek(DateTime now)
         {
-            var FirstDay = new DateTime(now.Year, now.Month, 1);
-            string strDate = FirstDay.ToString("dddd");
-            string[] dayWeek = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
-            
-            int iter = 0;
-            while (strDate != dayWeek[iter])
-            {
-                iter++;
-                //MessageBox.Show(iter.ToString());
-            }
-                
-            return iter;
+            //var FirstDay = new DateTime(now.Year, now.Month, 1);
+            //string strDate = FirstDay.ToString("dddd");
+            //string[] dayWeek = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+
+            //int iter = 0;
+            //while (strDate != dayWeek[iter])
+            //{
+            //    iter++;
+            //    //MessageBox.Show(iter.ToString());
+            //}
+            //MessageBox.Show(current.ToString("MM/dd/yyyy"));
+            DateTime temp = new DateTime(current.Year, current.Month, 1);
+            return (int)temp.DayOfWeek;
         }
         public int monLen(DateTime now)
         {
-            var FirstDay = new DateTime(now.Year, now.Month, 1);
-            var LastDay = FirstDay.AddMonths(1).AddDays(-1);
+            var temp = new DateTime(current.Year, current.Month, 1);
+            var LastDay = temp.AddMonths(1).AddDays(-1);
             string last = LastDay.ToString("dd");
             return Int32.Parse(last);
         }
-        public int currMonth(DateTime now)
-        {
-            return Int32.Parse(current.ToString("MM"))-1;
-        }
+        //public int currMonth(DateTime now)
+        //{
+        //    return Int32.Parse(current.ToString("MM"))-1;
+        //}
         public int monPrev(DateTime now)
         {
-            var FirstDay = new DateTime(now.Year, now.Month, 1);
-            var prevMonth = FirstDay.AddDays(-1);
+            var temp = new DateTime(current.Year, current.Month, 1);
+           
+            var prevMonth = temp.AddDays(-1);
             string prevLast = prevMonth.ToString("dd");
             int prevLen = Int32.Parse(prevLast);
             return prevLen;
@@ -84,12 +86,13 @@ namespace Calendar
                     DayGrid.SetColumn(d, c);
                 }
             }
-            SetMonth(currMonth(current), numWeek(current), monLen(current), monPrev(current));
+            SetMonth(current.ToString("MMMM"), numWeek(current), monLen(current), monPrev(current));
         }
 
-        public void SetMonth(int mNum, int dayOfWeek, int mLen, int prevMLen)
+        public void SetMonth(string mName, int dayOfWeek, int mLen, int prevMLen)
         {
-            MonthLabel.Text = monthsArr[mNum];
+            MessageBox.Show(dayOfWeek.ToString());
+            MonthLabel.Text = mName;
             int nextMonthStart = mLen + dayOfWeek;
             int j = 1;
             DayFrame d;
@@ -121,14 +124,14 @@ namespace Calendar
         private void PreviousMonthButton_Click(object sender, EventArgs e)
         {
             current = current.AddMonths(-1);
-            SetMonth(currMonth(current), numWeek(current), monLen(current), monPrev(current));
+            SetMonth(current.ToString("MMMM"), numWeek(current), monLen(current), monPrev(current));
         }
 
         private void NextMonthButton_Click(object sender, EventArgs e)
         {
            
             current = current.AddMonths(1);
-            SetMonth(currMonth(current), numWeek(current), monLen(current), monPrev(current));
+            SetMonth(current.ToString("MMMM"), numWeek(current), monLen(current), monPrev(current));
         }
     }
 }
