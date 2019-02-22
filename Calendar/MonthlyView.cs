@@ -91,16 +91,15 @@ namespace Calendar
             }
         }
 
-        private void PreviousMonthButton_Click(object sender, EventArgs e)
+        private void NextMonthButton_Click(object sender, EventArgs e)
         {
-            current = current.AddMonths(-1);
+            current = current.AddMonths(1);
             SetMonth(current.ToString("MMMM"), numWeek(current), monLen(current), monPrev(current));
         }
 
-        private void NextMonthButton_Click(object sender, EventArgs e)
+        private void PreviousMonthButton_Click(object sender, EventArgs e)
         {
-           
-            current = current.AddMonths(1);
+            current = current.AddMonths(-1);
             SetMonth(current.ToString("MMMM"), numWeek(current), monLen(current), monPrev(current));
         }
     }
