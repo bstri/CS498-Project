@@ -48,8 +48,8 @@
             this.DayGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28572F));
             this.DayGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28572F));
             this.DayGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28572F));
-            this.DayGrid.Location = new System.Drawing.Point(0, 39);
-            this.DayGrid.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.DayGrid.Location = new System.Drawing.Point(0, 32);
+            this.DayGrid.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.DayGrid.Name = "DayGrid";
             this.DayGrid.RowCount = 6;
             this.DayGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
@@ -58,7 +58,7 @@
             this.DayGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
             this.DayGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
             this.DayGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.DayGrid.Size = new System.Drawing.Size(1192, 478);
+            this.DayGrid.Size = new System.Drawing.Size(894, 388);
             this.DayGrid.TabIndex = 0;
             // 
             // MonthLabel
@@ -66,43 +66,42 @@
             this.MonthLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.MonthLabel.AutoSize = true;
-            this.MonthLabel.Location = new System.Drawing.Point(567, 11);
-            this.MonthLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.MonthLabel.Location = new System.Drawing.Point(425, 9);
             this.MonthLabel.Name = "MonthLabel";
-            this.MonthLabel.Size = new System.Drawing.Size(59, 17);
+            this.MonthLabel.Size = new System.Drawing.Size(44, 13);
             this.MonthLabel.TabIndex = 1;
             this.MonthLabel.Text = "January";
             // 
             // PreviousMonthButton
             // 
-            this.PreviousMonthButton.Location = new System.Drawing.Point(517, 5);
-            this.PreviousMonthButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.PreviousMonthButton.Location = new System.Drawing.Point(388, 4);
             this.PreviousMonthButton.Name = "PreviousMonthButton";
-            this.PreviousMonthButton.Size = new System.Drawing.Size(31, 28);
+            this.PreviousMonthButton.Size = new System.Drawing.Size(23, 23);
             this.PreviousMonthButton.TabIndex = 2;
             this.PreviousMonthButton.Text = "<";
             this.PreviousMonthButton.UseVisualStyleBackColor = true;
+            this.PreviousMonthButton.Click += new System.EventHandler(this.PreviousMonthButton_Click);
             // 
             // NextMonthButton
             // 
-            this.NextMonthButton.Location = new System.Drawing.Point(644, 5);
-            this.NextMonthButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.NextMonthButton.Location = new System.Drawing.Point(483, 4);
             this.NextMonthButton.Name = "NextMonthButton";
-            this.NextMonthButton.Size = new System.Drawing.Size(31, 28);
+            this.NextMonthButton.Size = new System.Drawing.Size(23, 23);
             this.NextMonthButton.TabIndex = 3;
             this.NextMonthButton.Text = ">";
             this.NextMonthButton.UseVisualStyleBackColor = true;
+            this.NextMonthButton.Click += new System.EventHandler(this.NextMonthButton_Click);
             // 
             // MonthlyView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1192, 517);
+            this.ClientSize = new System.Drawing.Size(894, 420);
             this.Controls.Add(this.NextMonthButton);
             this.Controls.Add(this.PreviousMonthButton);
             this.Controls.Add(this.MonthLabel);
             this.Controls.Add(this.DayGrid);
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "MonthlyView";
             this.Text = "Calendar";
             this.ResumeLayout(false);
