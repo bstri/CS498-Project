@@ -15,29 +15,8 @@ namespace Calendar
         private int gridSize;
         private DayFrame[] dayFrames;
        
-        public DateTime current;
-        public int numWeek(DateTime now)
-        {
-           
-            DateTime temp = new DateTime(current.Year, current.Month, 1);
-            return (int)temp.DayOfWeek;
-        }
-        public int monLen(DateTime now)
-        {
-            var temp = new DateTime(current.Year, current.Month, 1);
-            var LastDay = temp.AddMonths(1).AddDays(-1);
-            string last = LastDay.ToString("dd");
-            return Int32.Parse(last);
-        }
-      
-        public int monPrev(DateTime now)
-        {
-            var temp = new DateTime(current.Year, current.Month, 1);
-           
-            var prevMonth = temp.AddDays(-1);
-            int prevLen = Int32.Parse(prevMonth.ToString("dd"));
-            return prevLen;
-        }
+        public DateTime current; // the datetime storing the month currently being viewed
+       
         public MonthlyView()
         {
             InitializeComponent();
@@ -56,12 +35,34 @@ namespace Calendar
                     DayGrid.SetColumn(d, c);
                 }
             }
-            SetMonth(current.ToString("MMMM"), numWeek(current), monLen(current), monPrev(current));
+            SetMonth(getMonthName(current), getFirstDayOfMonth(current), getMonthLength(current), getPreviousMonthLength(current));
+        }
+        private string getMonthName(DateTime d)
+        {
+            return d.ToString("MMMM");
+        }
+        private int getFirstDayOfMonth(DateTime d)
+        {
+            DateTime monthStart = new DateTime(d.Year, d.Month, 1);
+            return (int)monthStart.DayOfWeek;
+        }
+        private int getMonthLength(DateTime d)
+        {
+            var monthStart = new DateTime(d.Year, d.Month, 1);
+            var lastDay = monthStart.AddMonths(1).AddDays(-1);
+            string last = lastDay.ToString("dd");
+            return int.Parse(last);
+        }
+        private int getPreviousMonthLength(DateTime d)
+        {
+            var monthStart = new DateTime(d.Year, d.Month, 1);
+            var prevMonthEnd = monthStart.AddDays(-1);
+            int prevLen = int.Parse(prevMonthEnd.ToString("dd"));
+            return prevLen;
         }
 
         public void SetMonth(string mName, int dayOfWeek, int mLen, int prevMLen)
         {
-          
             MonthLabel.Text = mName;
             int nextMonthStart = mLen + dayOfWeek;
             int j = 1;
@@ -94,13 +95,13 @@ namespace Calendar
         private void NextMonthButton_Click(object sender, EventArgs e)
         {
             current = current.AddMonths(1);
-            SetMonth(current.ToString("MMMM"), numWeek(current), monLen(current), monPrev(current));
+            SetMonth(getMonthName(current), getFirstDayOfMonth(current), getMonthLength(current), getPreviousMonthLength(current));
         }
 
         private void PreviousMonthButton_Click(object sender, EventArgs e)
         {
             current = current.AddMonths(-1);
-            SetMonth(current.ToString("MMMM"), numWeek(current), monLen(current), monPrev(current));
+            SetMonth(getMonthName(current), getFirstDayOfMonth(current), getMonthLength(current), getPreviousMonthLength(current));
         }
     }
 }
