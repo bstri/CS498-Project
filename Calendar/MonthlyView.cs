@@ -35,7 +35,11 @@ namespace Calendar
                     DayGrid.SetColumn(d, c);
                 }
             }
-            SetMonth(getMonthName(current), getFirstDayOfMonth(current), getMonthLength(current), getPreviousMonthLength(current));
+            SetMonth(getMonthName(current), getYear(current), getFirstDayOfMonth(current), getMonthLength(current), getPreviousMonthLength(current));
+        }
+        private int getYear(DateTime d)
+        {
+            return d.Year;
         }
         private string getMonthName(DateTime d)
         {
@@ -61,9 +65,9 @@ namespace Calendar
             return prevLen;
         }
 
-        public void SetMonth(string mName, int dayOfWeek, int mLen, int prevMLen)
+        public void SetMonth(string mName, int year, int dayOfWeek, int mLen, int prevMLen)
         {
-            MonthLabel.Text = mName;
+            MonthLabel.Text = mName + " " + year.ToString();
             int nextMonthStart = mLen + dayOfWeek;
             int j = 1;
             DayFrame d;
@@ -95,13 +99,13 @@ namespace Calendar
         private void NextMonthButton_Click(object sender, EventArgs e)
         {
             current = current.AddMonths(1);
-            SetMonth(getMonthName(current), getFirstDayOfMonth(current), getMonthLength(current), getPreviousMonthLength(current));
+            SetMonth(getMonthName(current), getYear(current), getFirstDayOfMonth(current), getMonthLength(current), getPreviousMonthLength(current));
         }
 
         private void PreviousMonthButton_Click(object sender, EventArgs e)
         {
             current = current.AddMonths(-1);
-            SetMonth(getMonthName(current), getFirstDayOfMonth(current), getMonthLength(current), getPreviousMonthLength(current));
+            SetMonth(getMonthName(current), getYear(current), getFirstDayOfMonth(current), getMonthLength(current), getPreviousMonthLength(current));
         }
     }
 }
