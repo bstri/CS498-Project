@@ -107,5 +107,11 @@ namespace Calendar
             current = current.AddMonths(-1);
             SetMonth(getMonthName(current), getYear(current), getFirstDayOfMonth(current), getMonthLength(current), getPreviousMonthLength(current));
         }
+
+        private void AddEventButton_Click(object sender, EventArgs e)
+        {
+            var f = new AddEventForm();
+            f.ShowDialog();
+        }
     }
 }
