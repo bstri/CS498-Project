@@ -42,31 +42,29 @@ namespace Calendar
             }
         }
 
-        private string[] appointments;
-        private List<Label> apptLabels = new List<Label>();
-        public void SetAppointments(string[] appts)
+        private List<Event> events = new List<Event>();
+        private Dictionary<Event, Label> eventLabels = new Dictionary<Event, Label>();
+        public void AddEvent(Event e)
         {
-            if (appts.SequenceEqual(appointments))
-                return;
-            foreach(Label appt in apptLabels)
+            Label l = new Label()
             {
-                Controls.Remove(appt);
-            }
-            appointments = appts;
-            foreach(string appt in appts)
-            {
-                Label lAppt = new Label()
-                {
-                    Text = appt,
-                    AutoEllipsis = true,
-                    AutoSize = false,
-                    //Cell = based on date
-                    //Color = chosen color
-                    MinimumSize = new Size(100, 0)
-                };
-                Controls.Add(lAppt);
-                apptLabels.Add(lAppt);
-            }
+                Text = e.Name,
+                AutoEllipsis = true,
+                AutoSize = false,
+                TextAlign = ContentAlignment.MiddleLeft,
+            };
+            Controls.Add(l);
+            eventLabels.Add(e, l);
+        }
+
+        public void RemoveEvent(Event e)
+        {
+
+        }
+
+        public void EditEvent(Event e)
+        {
+
         }
 
         private void expandDay()
