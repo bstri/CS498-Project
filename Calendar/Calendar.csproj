@@ -66,7 +66,7 @@
     <Compile Include="AddEventForm.Designer.cs">
       <DependentUpon>AddEventForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Appointment.cs" />
+    <Compile Include="Event.cs" />
     <Compile Include="MonthlyView.cs">
       <SubType>Form</SubType>
     </Compile>
