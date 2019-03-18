@@ -25,6 +25,12 @@ namespace Calendar
             };
             Controls.Add(dayLabel);
 
+            //TableLayoutPanel eventList = new TableLayoutPanel()
+            //{
+            //    Anchor
+            //};
+            //Controls.Add(eventList);
+
             // expand this day when clicked
             this.MouseClick += new MouseEventHandler((sender, e) => { expandDay(); });
         }
@@ -52,6 +58,7 @@ namespace Calendar
                 AutoEllipsis = true,
                 AutoSize = false,
                 TextAlign = ContentAlignment.MiddleLeft,
+                Anchor = AnchorStyles.Left | AnchorStyles.Right,
             };
             Controls.Add(l);
             eventLabels.Add(e, l);

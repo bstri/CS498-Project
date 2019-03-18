@@ -67,6 +67,7 @@ namespace Calendar
 
         public void SetMonth(string mName, int year, int dayOfWeek, int mLen, int prevMLen)
         {
+            // todo: refresh the dayframes
             MonthLabel.Text = mName + " " + year.ToString();
             int nextMonthStart = mLen + dayOfWeek;
             int j = 1;
@@ -77,6 +78,9 @@ namespace Calendar
                 d.DayNumber = j;
                 d.Enabled = true;
                 j++;
+                // todo: get day's events and add them to the day frame
+                // dbmanager.getEvents(datetime)
+                // iterate through the event list returned and call DayFrame.AddEvent
             }
             j = 1;
             for(int i = nextMonthStart; i < gridSize; i++)

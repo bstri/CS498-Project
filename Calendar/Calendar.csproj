@@ -66,6 +66,7 @@
     <Compile Include="AddEventForm.Designer.cs">
       <DependentUpon>AddEventForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="DbManager.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="MonthlyView.cs">
       <SubType>Form</SubType>
@@ -75,6 +76,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="test_DbManager.cs" />
     <EmbeddedResource Include="AddEventForm.resx">
       <DependentUpon>AddEventForm.cs</DependentUpon>
     </EmbeddedResource>
