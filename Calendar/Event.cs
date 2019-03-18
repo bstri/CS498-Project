@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Calendar
 {
-    class Event
+    public class Event
     {
         public readonly string Name;
         public readonly string Description;
