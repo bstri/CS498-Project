@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Data.SQLite;
+using System.Globalization;
 
 
 namespace Calendar
@@ -14,8 +15,9 @@ namespace Calendar
     {
         public sql_row() { }
 
-        public sql_row(long ap_year, long ap_month, long ap_day, string ap_time, string descr)
+        public sql_row(string ap_name, long ap_year, long ap_month, long ap_day, string ap_time, string descr)
         {
+            apt_name = ap_name;
             apt_year = ap_year;
             apt_month = ap_month;
             apt_day = ap_day;
@@ -24,6 +26,7 @@ namespace Calendar
         }
 
         // Properties.
+        public string apt_name { get; set; }
         public long apt_year { get; set; }
         public long apt_month { get; set; }
         public long apt_day { get; set; }
@@ -61,7 +64,7 @@ namespace Calendar
                 cal_dbconnection.Open();
 
                 //Create the appointments table
-                sql_str = "CREATE TABLE appointments (ap_year integer, ap_month integer, ap_day integer, ap_time varchar(5), desc VARCHAR(250), primary key (ap_year, ap_month, ap_day, ap_time, desc));";
+                sql_str = "CREATE TABLE appointments (ap_name VARCHAR(250), ap_year integer, ap_month integer, ap_day integer, ap_time varchar(5), desc VARCHAR(250), primary key (ap_year, ap_month, ap_day, ap_time, desc));";
                 sql_cmd = new SQLiteCommand(sql_str, cal_dbconnection);
                 sql_cmd.ExecuteNonQuery();
 
@@ -73,8 +76,34 @@ namespace Calendar
         public static List<Event> GetEvents(DateTime d)
         {
             List<Event> events = new List<Event>();
-            // todo
+            List<sql_row> ret_list = get_appointments(d.Year, d.Month, d.Day);
+            string tmpString = "";
+
+            foreach(sql_row row in ret_list)
+            {
+                tmpString = (row.apt_day + '-' + row.apt_month + '-' + row.apt_year + ' ' + row.apt_time);
+                DateTime dtmp = DateTime.ParseExact(tmpString, "dd-mm-yyyy hh:mm", CultureInfo.InvariantCulture);
+
+            }
+
             return events;
+        }
+
+        public static bool addAppointment(Event e)
+        {
+
+            //Name, Description, When
+            //(Name String, When Datetime, Description String)
+            //public static int insert_appointment(int ap_year, int ap_month, int ap_day, string ap_time, string apt_desc)
+            int retval = 0;
+            retval = insert_appointment(e.Name, e.When.Year, e.When.Month, e.When.Day, e.When.ToString("hh:mm"), e.Description);
+
+            if (retval == 1) {
+                return true;
+            } else
+            {
+                return false;
+            }
         }
 
         public static List<sql_row> get_appointments(int ap_year, int ap_month, int ap_day)
@@ -90,7 +119,7 @@ namespace Calendar
             cal_dbconnection.Open();
 
             //Queries the appointments for the given date
-            string sql_str = "SELECT ap_year, ap_month, ap_day, ap_time, desc FROM appointments WHERE ap_year = " + ap_year + " AND ap_month = " + ap_month + " AND ap_day = " + ap_day + ";";
+            string sql_str = "SELECT ap_name, ap_year, ap_month, ap_day, ap_time, desc FROM appointments WHERE ap_year = " + ap_year + " AND ap_month = " + ap_month + " AND ap_day = " + ap_day + ";";
             SQLiteCommand sql_cmd;
             sql_cmd = new SQLiteCommand(sql_str, cal_dbconnection);
             SQLiteDataReader sql_rdr = sql_cmd.ExecuteReader();
@@ -100,7 +129,7 @@ namespace Calendar
             while (sql_rdr.Read())
             {
                 //Console.WriteLine(Convert.ToInt64(sql_rdr["seqno"]));
-                sql_row tmp_row = new sql_row((long)sql_rdr["ap_year"], (long)sql_rdr["ap_month"], (long)sql_rdr["ap_day"], (string)sql_rdr["ap_time"], (string)sql_rdr["desc"]);
+                sql_row tmp_row = new sql_row((string)sql_rdr["ap_name"], (long)sql_rdr["ap_year"], (long)sql_rdr["ap_month"], (long)sql_rdr["ap_day"], (string)sql_rdr["ap_time"], (string)sql_rdr["desc"]);
                 ret_list.Add(tmp_row);
             }
 
@@ -110,7 +139,7 @@ namespace Calendar
 
         }
 
-        public static int insert_appointment(int ap_year, int ap_month, int ap_day, string ap_time, string apt_desc)
+        public static int insert_appointment(string ap_name, int ap_year, int ap_month, int ap_day, string ap_time, string apt_desc)
         {
             //This function simply creates an appointment based on the parameters.
 
@@ -123,7 +152,7 @@ namespace Calendar
             int row_num = 0;
 
             //Insert the row here.
-            string sql_str = "INSERT INTO appointments values (" + ap_year + ", " + ap_month + ", " + ap_day + ", '" + ap_time + "', '" + apt_desc + "');";
+            string sql_str = "INSERT INTO appointments values (" + ap_name + "," + ap_year + ", " + ap_month + ", " + ap_day + ", '" + ap_time + "', '" + apt_desc + "');";
             //Console.WriteLine(sql_str); //TESTING REMOVE LATER
             SQLiteCommand sql_cmd;
             sql_cmd = new SQLiteCommand(sql_str, cal_dbconnection);
