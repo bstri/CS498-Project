@@ -13,6 +13,8 @@ namespace Calendar
     {
         private Label dayLabel;
 
+        private TableLayoutPanel eventList;
+
         public DayFrame()
         {
             Dock = DockStyle.Fill;
@@ -25,11 +27,15 @@ namespace Calendar
             };
             Controls.Add(dayLabel);
 
-            //TableLayoutPanel eventList = new TableLayoutPanel()
-            //{
-            //    Anchor
-            //};
-            //Controls.Add(eventList);
+            eventList = new TableLayoutPanel()
+            {
+                ColumnCount = 1,
+                RowCount = 0,
+                Margin = new Padding(20, 0, 0, 0),
+                Anchor = (AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right | AnchorStyles.Left)
+
+            };
+            Controls.Add(eventList);
 
             // expand this day when clicked
             this.MouseClick += new MouseEventHandler((sender, e) => { expandDay(); });
@@ -52,15 +58,19 @@ namespace Calendar
         private Dictionary<Event, Label> eventLabels = new Dictionary<Event, Label>();
         public void AddEvent(Event e)
         {
+            eventList.RowCount++;
+
             Label l = new Label()
             {
                 Text = e.Name,
                 AutoEllipsis = true,
                 AutoSize = false,
                 TextAlign = ContentAlignment.MiddleLeft,
-                Anchor = AnchorStyles.Left | AnchorStyles.Right,
+                //Anchor = AnchorStyles.Left | AnchorStyles.Right,
+                Dock = DockStyle.Fill
             };
-            Controls.Add(l);
+            
+            eventList.Controls.Add(l);
             eventLabels.Add(e, l);
         }
 
