@@ -35,7 +35,7 @@ namespace Calendar
                     DayGrid.SetColumn(d, c);
                 }
             }
-            SetMonth(getMonthName(current), getYear(current), getFirstDayOfMonth(current), getMonthLength(current), getPreviousMonthLength(current));
+            SetMonth(current);
         }
         private int getYear(DateTime d)
         {
@@ -65,9 +65,15 @@ namespace Calendar
             return prevLen;
         }
 
-        public void SetMonth(string mName, int year, int dayOfWeek, int mLen, int prevMLen)
+        public void SetMonth(DateTime dayInMonth)
         {
             // todo: refresh the dayframes
+            string mName = getMonthName(dayInMonth);
+            int year = getYear(dayInMonth);
+            int mLen = getMonthLength(dayInMonth);
+            int dayOfWeek = getFirstDayOfMonth(dayInMonth);
+            int prevMLen = getPreviousMonthLength(dayInMonth);
+
             MonthLabel.Text = mName + " " + year.ToString();
             int nextMonthStart = mLen + dayOfWeek;
             int j = 1;
@@ -78,9 +84,13 @@ namespace Calendar
                 d.DayNumber = j;
                 d.Enabled = true;
                 j++;
+                //create dateTime for getEvents
                 // todo: get day's events and add them to the day frame
-                // dbmanager.getEvents(datetime)
+                //List<Event> events = sql_class.getEvents(date);
                 // iterate through the event list returned and call DayFrame.AddEvent
+                //for x in events
+                //      DayFrame.AddEvent(events[x])
+
             }
             j = 1;
             for(int i = nextMonthStart; i < gridSize; i++)
@@ -103,13 +113,13 @@ namespace Calendar
         private void NextMonthButton_Click(object sender, EventArgs e)
         {
             current = current.AddMonths(1);
-            SetMonth(getMonthName(current), getYear(current), getFirstDayOfMonth(current), getMonthLength(current), getPreviousMonthLength(current));
+            SetMonth(current);
         }
 
         private void PreviousMonthButton_Click(object sender, EventArgs e)
         {
             current = current.AddMonths(-1);
-            SetMonth(getMonthName(current), getYear(current), getFirstDayOfMonth(current), getMonthLength(current), getPreviousMonthLength(current));
+            SetMonth(current);
         }
 
         private void AddEventButton_Click(object sender, EventArgs e)

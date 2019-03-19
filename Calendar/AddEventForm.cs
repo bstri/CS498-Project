@@ -36,7 +36,7 @@ namespace Calendar
             DateTime time = EventTimePicker.Value;
             DateTime combined = new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, 0);
             Event newEvent = new Event(EventNameTextBox.Text, combined, EventDescriptionTextBox.Text);
-            // todo add event to database (also may require an update of monthly view)
+            sql_class.addAppointment(newEvent);
             this.Close();
         }
     }
