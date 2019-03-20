@@ -83,7 +83,8 @@ namespace Calendar
             {
                 tmpString = (row.apt_day + '-' + row.apt_month + '-' + row.apt_year + ' ' + row.apt_time);
                 DateTime dtmp = DateTime.ParseExact(tmpString, "dd-mm-yyyy hh:mm", CultureInfo.InvariantCulture);
-
+                Event e = new Event(row.apt_name, dtmp, row.desc);
+                events.Add(e);
             }
 
             return events;
