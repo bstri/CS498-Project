@@ -47,8 +47,8 @@ namespace Calendar
             //Should consider putting this in an absolute location
             //so if the user moves the calendar program it can still
             //find the DB.
-            if (!File.Exists("Calendar_db.sqlite"))
-            {
+            //if (!File.Exists("Calendar_db.sqlite"))
+           // {
                 //VARS
                 SQLiteConnection cal_dbconnection;
                 string sql_str = "";
@@ -70,7 +70,7 @@ namespace Calendar
 
                 //Finally, we close the database/connection
                 cal_dbconnection.Close();
-            }
+           // }
         }
 
         public static List<Event> GetEvents(DateTime d)
@@ -152,7 +152,7 @@ namespace Calendar
             int row_num = 0;
 
             //Insert the row here.
-            string sql_str = "INSERT INTO appointments values (" + ap_name + "," + ap_year + ", " + ap_month + ", " + ap_day + ", '" + ap_time + "', '" + apt_desc + "');";
+            string sql_str = "INSERT INTO appointments values ('" + ap_name + "'," + ap_year + ", " + ap_month + ", " + ap_day + ", '" + ap_time + "', '" + apt_desc + "');";
             //Console.WriteLine(sql_str); //TESTING REMOVE LATER
             SQLiteCommand sql_cmd;
             sql_cmd = new SQLiteCommand(sql_str, cal_dbconnection);
