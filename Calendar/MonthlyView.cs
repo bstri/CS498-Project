@@ -91,7 +91,6 @@ namespace Calendar
                 DayFrameDict.Add(date, i);
                 j++;
 
-
                 RefreshDayFrame(date); //, highlighted);
             }
             j = 1;
