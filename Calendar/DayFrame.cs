@@ -9,7 +9,7 @@ using System.Diagnostics;
 
 namespace Calendar
 {
-    class DayFrame : Panel
+    public class DayFrame : Panel
     {
         private Label dayLabel;
 

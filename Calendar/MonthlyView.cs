@@ -85,16 +85,12 @@ namespace Calendar
                 d.Enabled = true;
                 DateTime date = new DateTime(year, dayInMonth.Month, j);
                 j++;
-                
-                //Year, Month, Day, Hour, Minutes
 
-                //create dateTime for getEvents
                 // todo: get day's events and add them to the day frame
                 List<Event> events = sql_class.GetEvents(date);
-                // iterate through the event list returned and call DayFrame.AddEvent
-                for (int k = 0; k < events.Count; k++)
+                foreach(var e in events)
                 {
-                    sql_class.addAppointment(events[k]);
+                    // iterate through the event list returned and call DayFrame.
                 }
 
             }

@@ -11,35 +11,36 @@ namespace CalendarTest
         [TestInitialize]
         public void TestInitialize()
         {
-            // initialize temporary testing database
-            // i.e. sql_class.initialize_db("testDB");
+            sql_class.InitializeTestDB();
         }
 
         [TestCleanup]
         public void TestCleanup()
         {
-            // destroy testing database
+            // todo remove database
         }
 
         [TestMethod]
         public void TestAddEvent()
         {
             DateTime now = DateTime.Now;
-            Event e = new Event("testEvent", now, "testDescription");
-            sql_class.addAppointment(e);
-            List<Event> events = sql_class.GetEvents(now);
+            DateTime dt = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, 0); // important to use 0 for seconds since dbmanager doesn't store seconds
+            Event e = new Event("testEvent", dt, "testDescription");
+            sql_class.AddTestEvent(e);
+            List<Event> events = sql_class.GetTestEvents(dt);
             Assert.AreEqual(events.Count, 1);
-            Assert.AreEqual(events[1], e);
+            Assert.AreEqual(events[0], e);
         }
 
+        [TestMethod]
         public void TestGetEvents()
         {
             DateTime now = DateTime.Now;
-            sql_class.addAppointment(new Event("e1", now));
-            sql_class.addAppointment(new Event("e2", now));
-            sql_class.addAppointment(new Event("e3", now.AddDays(1)));
-            Assert.AreEqual(sql_class.GetEvents(now).Count, 2);
-            Assert.AreEqual(sql_class.GetEvents(now.AddDays(1)).Count, 1);
+            sql_class.AddTestEvent(new Event("e1", now));
+            sql_class.AddTestEvent(new Event("e2", now));
+            sql_class.AddTestEvent(new Event("e3", now.AddDays(1)));
+            Assert.AreEqual(sql_class.GetTestEvents(now).Count, 2);
+            Assert.AreEqual(sql_class.GetTestEvents(now.AddDays(1)).Count, 1);
         }
     }
 }

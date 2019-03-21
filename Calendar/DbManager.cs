@@ -38,7 +38,10 @@ namespace Calendar
     //This is the meat of the DB manager.
     public class sql_class
     {
-        public static void initialize_db()
+        private static readonly string dbFileName = "Calendar_db.sqlite";
+        private static readonly string testDBFileName = "test_db.sqlite";
+
+        private static void initializeDB(string dbFile)
         {
             //Only bother with database creation if one doesn't exist.
             //This also allows us to call this function each time we
@@ -55,10 +58,10 @@ namespace Calendar
                 SQLiteCommand sql_cmd;
 
                 //Create the DB file
-                SQLiteConnection.CreateFile("Calendar_db.sqlite");
+                SQLiteConnection.CreateFile(dbFile);
 
                 //Connect to the database we just created
-                cal_dbconnection = new SQLiteConnection("Data Source=Calendar_db.sqlite;Version=3;");
+                cal_dbconnection = new SQLiteConnection("Data Source=" + dbFile + ";Version=3;");
 
                 //Open our database
                 cal_dbconnection.Open();
@@ -73,10 +76,20 @@ namespace Calendar
            // }
         }
 
-        public static List<Event> GetEvents(DateTime d)
+        public static void InitializeDB()
+        {
+            initializeDB(dbFileName);
+        }
+
+        public static void InitializeTestDB()
+        {
+            initializeDB(testDBFileName);
+        }
+
+        private static List<Event> getEvents(string dbFile, DateTime d)
         {
             List<Event> events = new List<Event>();
-            List<sql_row> ret_list = get_appointments(d.Year, d.Month, d.Day);
+            List<sql_row> ret_list = get_appointments(dbFile, d.Year, d.Month, d.Day);
             string tmpString = "";
 
             foreach(sql_row row in ret_list)
@@ -97,24 +110,38 @@ namespace Calendar
             return events;
         }
 
-        public static bool addAppointment(Event e)
+        public static List<Event> GetEvents(DateTime d)
+        {
+            return getEvents(dbFileName, d);
+        }
+
+        public static List<Event> GetTestEvents(DateTime d)
+        {
+            return getEvents(testDBFileName, d);
+        }
+
+        private static bool addEvent(string dbFile, Event e)
         {
 
             //Name, Description, When
             //(Name String, When Datetime, Description String)
             //public static int insert_appointment(int ap_year, int ap_month, int ap_day, string ap_time, string apt_desc)
             int retval = 0;
-            retval = insert_appointment(e.Name, e.When.Year, e.When.Month, e.When.Day, e.When.ToString("hh:mm"), e.Description);
-
-            if (retval == 1) {
-                return true;
-            } else
-            {
-                return false;
-            }
+            retval = insert_appointment(dbFile, e.Name, e.When.Year, e.When.Month, e.When.Day, e.When.ToString("hh:mm"), e.Description);
+            return retval == 1;
         }
 
-        public static List<sql_row> get_appointments(int ap_year, int ap_month, int ap_day)
+        public static bool AddEvent(Event e)
+        {
+            return addEvent(dbFileName, e);
+        }
+
+        public static bool AddTestEvent(Event e)
+        {
+            return addEvent(testDBFileName, e);
+        }
+
+        private static List<sql_row> get_appointments(string dbFile, int ap_year, int ap_month, int ap_day)
         {
             //This simply gets all appointments for a given day
 
@@ -123,7 +150,7 @@ namespace Calendar
             //as it operates under the assumption that initialize_db() is always
             //run at the start of the program.
             SQLiteConnection cal_dbconnection;
-            cal_dbconnection = new SQLiteConnection("Data Source=Calendar_db.sqlite;Version=3;");
+            cal_dbconnection = new SQLiteConnection("Data Source=" + dbFile + ";Version=3;");
             cal_dbconnection.Open();
 
             //Queries the appointments for the given date
@@ -147,13 +174,13 @@ namespace Calendar
 
         }
 
-        public static int insert_appointment(string ap_name, int ap_year, int ap_month, int ap_day, string ap_time, string apt_desc)
+        private static int insert_appointment(string dbFile, string ap_name, int ap_year, int ap_month, int ap_day, string ap_time, string apt_desc)
         {
             //This function simply creates an appointment based on the parameters.
 
             //Connect to the database.
             SQLiteConnection cal_dbconnection;
-            cal_dbconnection = new SQLiteConnection("Data Source=Calendar_db.sqlite;Version=3;");
+            cal_dbconnection = new SQLiteConnection("Data Source=" + dbFile + ";Version=3;");
             cal_dbconnection.Open();
 
             //Row num will be an integer recording the number of rows affected.
