@@ -14,14 +14,11 @@ namespace Calendar
         [STAThread]
         static void Main()
         {
+            sql_class.initialize_db();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             MonthlyView mv = new MonthlyView();
             Application.Run(mv);
-            // todo: Set up monthly view with current month, e.g. 
-            // mv.SetStartDay(0-6 for sun-sat) ; Backend.GetMonthStartDay(2/2019) --> 0-6
-            // mv.SetMonthLength(backend.GetMonthLength(2/2019));
-            // mv.SetPreviousMonthLeng(backend.GetMonthLength(1/2019));
         }
     }
 }
