@@ -14,6 +14,7 @@ namespace Calendar
     {
         private int gridSize;
         private DayFrame[] dayFrames;
+        private Dictionary<DateTime, int> DayFrameDict = new Dictionary<DateTime, int>(); 
        
         public DateTime current; // the datetime storing the month currently being viewed
        
@@ -78,24 +79,20 @@ namespace Calendar
             int nextMonthStart = mLen + dayOfWeek;
             int j = 1;
             DayFrame d;
+            DayFrameDict.Clear();
             for(int i = dayOfWeek; i < nextMonthStart; i++)
             {
                 d = dayFrames[i];
                 d.DayNumber = j;
                 d.Enabled = true;
-                d.ClearEvents();
 
                 DateTime date = new DateTime(year, dayInMonth.Month, j);
+
+                DayFrameDict.Add(date, i);
                 j++;
 
-                // todo: get day's events and add them to the day frame
-                List<Event> events = sql_class.GetEvents(date);
-                foreach(var e in events)
-                {
-                    d.AddEvent(e);
-                    // iterate through the event list returned and call DayFrame.
-                }
 
+                RefreshDayFrame(date); //, highlighted);
             }
             j = 1;
             for(int i = nextMonthStart; i < gridSize; i++)
@@ -131,6 +128,21 @@ namespace Calendar
         {
             var f = new AddEventForm();
             f.ShowDialog();
+        }
+
+
+        //Called From SetMonth() and the AddEventForm
+        //Update GUI to display events 
+        public void RefreshDayFrame(DateTime date)//DayFrame d)//, bool highlighted)
+        {
+            // todo transform date so that it is 0 hours 0 minutes 0 seconds
+            List<Event> events = sql_class.GetEvents(date);
+            DayFrame d = dayFrames[DayFrameDict[date]];
+            d.ClearEvents();
+            foreach (var e in events)
+            {
+                d.AddEvent(e);
+            }
         }
     }
 }
