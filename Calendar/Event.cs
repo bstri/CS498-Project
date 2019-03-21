@@ -18,5 +18,19 @@ namespace Calendar
             When = d;
             Description = description;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
+            Event e2 = (Event)obj;
+            return (Name == e2.Name && When == e2.When && Description == e2.Description);
+        }
+
+        public override int GetHashCode()
+        {
+            return When.GetHashCode();
+        }
     }
 }
