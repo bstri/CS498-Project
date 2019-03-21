@@ -86,6 +86,21 @@ namespace Calendar
             initializeDB(testDBFileName);
         }
 
+        private static void destroyDB(string dbFile)
+        {
+            // todo delete the dbFile
+        }
+
+        public static void DestroyDB()
+        {
+            destroyDB(dbFileName);
+        }
+
+        public static void DestroyTestDB()
+        {
+            destroyDB(testDBFileName);
+        }
+
         private static List<Event> getEvents(string dbFile, DateTime d)
         {
             List<Event> events = new List<Event>();

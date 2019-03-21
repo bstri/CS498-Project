@@ -17,7 +17,7 @@ namespace CalendarTest
         [TestCleanup]
         public void TestCleanup()
         {
-            // todo remove database
+            sql_class.DestroyTestDB();
         }
 
         [TestMethod]
