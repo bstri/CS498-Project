@@ -5,7 +5,7 @@ using System.Text;
 using System.IO;
 using System.Data.SQLite;
 using System.Globalization;
-
+using System.Diagnostics;
 
 namespace Calendar
 {
@@ -82,6 +82,7 @@ namespace Calendar
             foreach(sql_row row in ret_list)
             {
                 tmpString = (row.apt_day + '-' + row.apt_month + '-' + row.apt_year + ' ' + row.apt_time);
+                Debug.WriteLine(tmpString);
                 DateTime dtmp = DateTime.ParseExact(tmpString, "dd-mm-yyyy hh:mm", CultureInfo.InvariantCulture);
                 Event e = new Event(row.apt_name, dtmp, row.desc);
                 events.Add(e);

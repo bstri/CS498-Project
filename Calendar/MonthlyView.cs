@@ -14,6 +14,7 @@ namespace Calendar
     {
         private int gridSize;
         private DayFrame[] dayFrames;
+        private Dictionary<DateTime, int> DayFrameDict = new Dictionary<DateTime, int>(); 
        
         public DateTime current; // the datetime storing the month currently being viewed
        
@@ -78,25 +79,19 @@ namespace Calendar
             int nextMonthStart = mLen + dayOfWeek;
             int j = 1;
             DayFrame d;
+            DayFrameDict.Clear();
             for(int i = dayOfWeek; i < nextMonthStart; i++)
             {
                 d = dayFrames[i];
                 d.DayNumber = j;
                 d.Enabled = true;
                 DateTime date = new DateTime(year, dayInMonth.Month, j);
+
+                DayFrameDict.Add(date, i);
                 j++;
-                
-                //Year, Month, Day, Hour, Minutes
 
-                //create dateTime for getEvents
-                // todo: get day's events and add them to the day frame
-                List<Event> events = sql_class.GetEvents(date);
-                // iterate through the event list returned and call DayFrame.AddEvent
-                for (int k = 0; k < events.Count; k++)
-                {
-                    sql_class.addAppointment(events[k]);
-                }
 
+                RefreshDayFrame(date); //, highlighted);
             }
             j = 1;
             for(int i = nextMonthStart; i < gridSize; i++)
@@ -132,6 +127,21 @@ namespace Calendar
         {
             var f = new AddEventForm();
             f.ShowDialog();
+        }
+
+
+        //Called From SetMonth() and the AddEventForm
+        //Update GUI to display events 
+        public void RefreshDayFrame(DateTime date)//DayFrame d)//, bool highlighted)
+        {
+            // todo: get day's events and add them to the day frame
+            List<Event> events = sql_class.GetEvents(date);
+            DayFrame d = dayFrames[DayFrameDict[date]];
+            // iterate through the event list returned and call DayFrame.AddEvent
+            for (int k = 0; k < events.Count; k++)
+            {
+                d.AddEvent(events[k]);
+            }
         }
     }
 }
