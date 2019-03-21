@@ -64,7 +64,7 @@ namespace Calendar
                 cal_dbconnection.Open();
 
                 //Create the appointments table
-                sql_str = "CREATE TABLE appointments (ap_name VARCHAR(250), ap_year integer, ap_month integer, ap_day integer, ap_time varchar(5), desc VARCHAR(250), primary key (ap_year, ap_month, ap_day, ap_time, desc));";
+                sql_str = "CREATE TABLE appointments (ap_name VARCHAR(250), ap_year integer, ap_month integer, ap_day integer, ap_time varchar(5), desc VARCHAR(250));";
                 sql_cmd = new SQLiteCommand(sql_str, cal_dbconnection);
                 sql_cmd.ExecuteNonQuery();
 
@@ -81,8 +81,15 @@ namespace Calendar
 
             foreach(sql_row row in ret_list)
             {
-                tmpString = (row.apt_day + '-' + row.apt_month + '-' + row.apt_year + ' ' + row.apt_time);
-                DateTime dtmp = DateTime.ParseExact(tmpString, "dd-mm-yyyy hh:mm", CultureInfo.InvariantCulture);
+                Console.WriteLine(row.apt_day);
+                Console.WriteLine(row.apt_month);
+                Console.WriteLine(row.apt_year);
+                Console.WriteLine(row.apt_time);
+
+                tmpString = (row.apt_day.ToString() + "-" + row.apt_month.ToString() + "-" + row.apt_year.ToString() + " " + row.apt_time.ToString());
+                Console.WriteLine(tmpString);
+
+                DateTime dtmp = DateTime.ParseExact(tmpString, "d-M-yyyy HH:mm", CultureInfo.InvariantCulture);
                 Event e = new Event(row.apt_name, dtmp, row.desc);
                 events.Add(e);
             }
@@ -153,8 +160,9 @@ namespace Calendar
             int row_num = 0;
 
             //Insert the row here.
-            string sql_str = "INSERT INTO appointments values ('" + ap_name + "'," + ap_year + ", " + ap_month + ", " + ap_day + ", '" + ap_time + "', '" + apt_desc + "');";
+            string sql_str = "INSERT INTO appointments values ('" + ap_name + "', " + ap_year + ", " + ap_month + ", " + ap_day + ", '" + ap_time + "', '" + apt_desc + "');";
             //Console.WriteLine(sql_str); //TESTING REMOVE LATER
+            Console.WriteLine(sql_str);
             SQLiteCommand sql_cmd;
             sql_cmd = new SQLiteCommand(sql_str, cal_dbconnection);
             row_num = sql_cmd.ExecuteNonQuery();
