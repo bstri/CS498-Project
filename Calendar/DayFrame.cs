@@ -26,16 +26,17 @@ namespace Calendar
                 AutoSize = true,
             };
             Controls.Add(dayLabel);
+            dayLabel.MouseClick += new MouseEventHandler((sender, e) => { OnMouseClick(e); }); // propagate mouse click to dayframe
 
             eventList = new TableLayoutPanel()
             {
                 ColumnCount = 1,
-                RowCount = 0,
-                Margin = new Padding(20, 0, 0, 0),
-                Anchor = (AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right | AnchorStyles.Left)
-
+                RowCount = 1,
+                Location = new Point(0,15),
+                Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom,
             };
             Controls.Add(eventList);
+            eventList.MouseClick += new MouseEventHandler((sender, e) => { OnMouseClick(e); }); // propagate mouse click to dayframe
 
             // expand this day when clicked
             this.MouseClick += new MouseEventHandler((sender, e) => { expandDay(); });
@@ -66,22 +67,25 @@ namespace Calendar
                 AutoEllipsis = true,
                 AutoSize = false,
                 TextAlign = ContentAlignment.MiddleLeft,
-                //Anchor = AnchorStyles.Left | AnchorStyles.Right,
-                Dock = DockStyle.Fill
+                Dock = DockStyle.Fill,
+                Font = new Font("Sans Serif", 8),
             };
-            
+
+            eventList.RowStyles.Add(new RowStyle(SizeType.Absolute, 12));
             eventList.Controls.Add(l);
             eventLabels.Add(e, l);
         }
 
-        public void RemoveEvent(Event e)
+        public void ClearEvents()
         {
-
-        }
-
-        public void EditEvent(Event e)
-        {
-
+            eventLabels.Clear();
+            events.Clear();
+            eventList.Controls.Clear();
+            for(int r = 1; r < eventList.RowStyles.Count; r++)
+            {
+                eventList.RowStyles.RemoveAt(r);
+            }
+            eventList.RowCount = 1;
         }
 
         private void expandDay()

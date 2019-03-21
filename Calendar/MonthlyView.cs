@@ -83,6 +83,8 @@ namespace Calendar
                 d = dayFrames[i];
                 d.DayNumber = j;
                 d.Enabled = true;
+                d.ClearEvents();
+
                 DateTime date = new DateTime(year, dayInMonth.Month, j);
                 j++;
 
@@ -90,6 +92,7 @@ namespace Calendar
                 List<Event> events = sql_class.GetEvents(date);
                 foreach(var e in events)
                 {
+                    d.AddEvent(e);
                     // iterate through the event list returned and call DayFrame.
                 }
 
