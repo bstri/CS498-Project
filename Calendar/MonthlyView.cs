@@ -38,6 +38,11 @@ namespace Calendar
             }
             SetMonth(current);
         }
+
+        public MonthlyView(bool x)
+        {
+
+        }
         private int getYear(DateTime d)
         {
             return d.Year;
@@ -79,7 +84,9 @@ namespace Calendar
             int nextMonthStart = mLen + dayOfWeek;
             int j = 1;
             DayFrame d;
-            DayFrameDict.Clear();
+            DateTime blankDate = new DateTime();
+            Event blankEvent = new Event(null, blankDate, null);
+           // DayFrameDict.Clear();
             for(int i = dayOfWeek; i < nextMonthStart; i++)
             {
                 d = dayFrames[i];
@@ -91,7 +98,7 @@ namespace Calendar
                 j++;
 
 
-                RefreshDayFrame(date); //, highlighted);
+                RefreshDayFrame(date, false, blankEvent); //, highlighted);
             }
             j = 1;
             for(int i = nextMonthStart; i < gridSize; i++)
@@ -132,16 +139,22 @@ namespace Calendar
 
         //Called From SetMonth() and the AddEventForm
         //Update GUI to display events 
-        public void RefreshDayFrame(DateTime date)//DayFrame d)//, bool highlighted)
+        public void RefreshDayFrame(DateTime date, bool isNew, Event newEvent)
         {
-            // todo: get day's events and add them to the day frame
             List<Event> events = sql_class.GetEvents(date);
             DayFrame d = dayFrames[DayFrameDict[date]];
-            // iterate through the event list returned and call DayFrame.AddEvent
-            for (int k = 0; k < events.Count; k++)
-            {
-                d.AddEvent(events[k]);
+            if (!isNew){
+                
+                for (int k = 0; k < events.Count; k++)
+                {
+                    d.AddEvent(events[k]);
+                }
             }
+            else
+            {
+                d.AddEvent(newEvent);       
+            }
+            
         }
     }
 }

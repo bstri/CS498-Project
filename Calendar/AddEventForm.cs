@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace Calendar
 {
     public partial class AddEventForm : Form
@@ -37,6 +38,10 @@ namespace Calendar
             DateTime combined = new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, 0);
             Event newEvent = new Event(EventNameTextBox.Text, combined, EventDescriptionTextBox.Text);
             sql_class.AddEvent(newEvent);
+            MonthlyView mv = new MonthlyView(true);
+            DateTime refreshDate = new DateTime(date.Year, date.Month, date.Day);
+            mv.RefreshDayFrame(refreshDate, true, newEvent);
+           //.RefreshDayFrame(refreshDate, true, newEvent);
             this.Close();
         }
     }
