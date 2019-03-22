@@ -13,7 +13,7 @@ namespace Calendar
     {
         private Label dayLabel;
 
-        private TableLayoutPanel eventList;
+        public TableLayoutPanel eventList;
 
         public DayFrame()
         {

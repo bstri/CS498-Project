@@ -14,7 +14,6 @@ namespace Calendar
     {
         private static int gridSize;
         private static DayFrame[] dayFrames;
-        //Dictionary<DateTime, int> DayFrameDict = new Dictionary<DateTime, int>();
         public static DateTime current; // the datetime storing the month currently being viewed
        
         public MonthlyView()
@@ -85,9 +84,7 @@ namespace Calendar
             //Stops event appearing on every month
             for (int i = 0; i < gridSize; i++)
             {
-                // dayFrames[i].eventLabels.Clear();
-                dayFrames[i].eventList.Controls.Clear();
-                //dayFrames[i].eventList.RowCount++;
+                dayFrames[i].ClearEvents();
 
             }
 
@@ -97,8 +94,6 @@ namespace Calendar
                 d.DayNumber = j;
                 d.Enabled = true;
                 DateTime date = new DateTime(year, dayInMonth.Month, j);
-
-                ;
                 j++;
                 List<Event> events = sql_class.GetEvents(date);
                 for (int k = 0; k < events.Count; k++)
@@ -112,13 +107,8 @@ namespace Calendar
                 d = dayFrames[i];
                 d.DayNumber = j;
                 d.Enabled = false;
-                //DateTime date = new DateTime(year, dayInMonth.Month, j);
                 j++;
-                /*List<Event> events = sql_class.GetEvents(date);
-                for (int k = 0; k < events.Count; k++)
-                {
-                    d.AddEvent(events[k]);
-                }*/
+                
             }
             j = prevMLen;
             for(int i = dayOfWeek - 1; i >= 0; i--)
@@ -126,13 +116,7 @@ namespace Calendar
                 d = dayFrames[i];
                 d.DayNumber = j;
                 d.Enabled = false;
-               // DateTime date = new DateTime(year, dayInMonth.Month, j);
                 j--;
-               /* List<Event> events = sql_class.GetEvents(date);
-                for (int k = 0; k < events.Count; k++)
-                {
-                    d.AddEvent(events[k]);
-                }*/
             }
         }
 
@@ -154,12 +138,9 @@ namespace Calendar
             f.ShowDialog();
         }
 
-
-        //Called From SetMonth() and the AddEventForm
         //Update GUI to display events 
         public void RefreshDayFrame(DateTime date, Event newEvent)
         {
-            //DayFrame d = null;
             DayFrame d = dayFrames[0];
             int correctFrame = -1;
             
