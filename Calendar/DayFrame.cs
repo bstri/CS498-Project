@@ -13,7 +13,7 @@ namespace Calendar
     {
         private Label dayLabel;
 
-        private TableLayoutPanel eventList;
+        public TableLayoutPanel eventList;
 
         public DayFrame()
         {
@@ -55,7 +55,7 @@ namespace Calendar
         }
 
         private List<Event> events = new List<Event>();
-        private Dictionary<Event, Label> eventLabels = new Dictionary<Event, Label>();
+        public Dictionary<Event, Label> eventLabels = new Dictionary<Event, Label>();
         public void AddEvent(Event e)
         {
             eventList.RowCount++;
@@ -66,13 +66,22 @@ namespace Calendar
                 AutoEllipsis = true,
                 AutoSize = false,
                 TextAlign = ContentAlignment.MiddleLeft,
-                //Anchor = AnchorStyles.Left | AnchorStyles.Right,
                 Dock = DockStyle.Fill
             };
             
             eventList.Controls.Add(l);
-            eventLabels.Add(e, l);
+            if (!eventLabels.ContainsKey(e))
+            {
+                eventLabels.Add(e, l);
+            }
+            //eventLabels.Add(e, l);
         }
+
+       /* public void ClearEventRows()
+        {
+            eventList.RowStyles.Clear();
+            eventLabels.Clear();
+        }*/
 
         public void RemoveEvent(Event e)
         {

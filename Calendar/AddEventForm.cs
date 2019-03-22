@@ -40,8 +40,10 @@ namespace Calendar
             sql_class.AddEvent(newEvent);
             MonthlyView mv = new MonthlyView(true);
             DateTime refreshDate = new DateTime(date.Year, date.Month, date.Day);
-            mv.RefreshDayFrame(refreshDate, true, newEvent);
-           //.RefreshDayFrame(refreshDate, true, newEvent);
+            mv.RefreshDayFrame(refreshDate, newEvent);
+            //MonthlyView.RefreshDayFrame(refreshDate, true, newEvent);
+            //mv.RefreshDayFrame(refreshDate, true, newEvent);
+            //DayFrame d = MonthlyView.dayFrames[0];
             this.Close();
         }
     }
