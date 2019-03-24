@@ -15,7 +15,8 @@ namespace Calendar
         private static int gridSize;
         private static DayFrame[] dayFrames;
         public static DateTime current; // the datetime storing the month currently being viewed
-       
+        DateTime today = DateTime.Now; // today's date
+
         public MonthlyView()
         {
             InitializeComponent();
@@ -79,9 +80,17 @@ namespace Calendar
             int nextMonthStart = mLen + dayOfWeek;
             int j = 1;
             DayFrame d;
-           
-            //Stops event appearing on every month
-            for (int i = 0; i < gridSize; i++)
+            bool bold = false;
+            if (current.ToString("MMMM yyyy") == today.ToString("MMMM yyyy"))
+            {
+                bold = true;
+            }
+
+
+            
+
+                //Stops event appearing on every month
+                for (int i = 0; i < gridSize; i++)
             {
                 // todo this should be done inside refreshDayFrame()
                 dayFrames[i].ClearEvents();
@@ -93,6 +102,15 @@ namespace Calendar
             {
                 d = dayFrames[i];
                 // todo turn this part into a function so you can call it in each for loop
+                if (bold == true && Convert.ToInt32(today.ToString("dd")) == j)
+                {
+                    d.Font = new Font("Sans Serif", 8, FontStyle.Bold);
+                    //= new Font("Microsoft Sans Serif", 8.25,FontStyle.Bold);
+                }
+                else
+                {
+                    d.Font = new Font("Sans Serif", 8);
+                }
                 d.DayNumber = j;
                 d.Enabled = true;
                 DateTime date = new DateTime(year, dayInMonth.Month, j);
