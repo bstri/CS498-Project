@@ -70,6 +70,7 @@
       <DependentUpon>AddEventForm.cs</DependentUpon>
     </Compile>
     <Compile Include="DbManager.cs" />
+    <Compile Include="Project.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="MonthlyView.cs">
       <SubType>Form</SubType>
