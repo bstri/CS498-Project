@@ -26,7 +26,7 @@
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
+        public void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
             this.SubmitProjectButton = new System.Windows.Forms.Button();
@@ -38,6 +38,7 @@
             this.EmptyProjectNameWarningLabel = new System.Windows.Forms.Label();
             this.ProjDateStart = new System.Windows.Forms.DateTimePicker();
             this.ProjectDateEnd = new System.Windows.Forms.DateTimePicker();
+            this.ColorBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -62,6 +63,7 @@
             this.SubmitProjectButton.TabIndex = 3;
             this.SubmitProjectButton.Text = "+";
             this.SubmitProjectButton.UseVisualStyleBackColor = true;
+            this.SubmitProjectButton.Click += new System.EventHandler(this.SubmitProjectButton_Click);
             // 
             // ProjectNameTextBox
             // 
@@ -141,11 +143,22 @@
             this.ProjectDateEnd.Size = new System.Drawing.Size(187, 20);
             this.ProjectDateEnd.TabIndex = 12;
             // 
+            // ColorBtn
+            // 
+            this.ColorBtn.Location = new System.Drawing.Point(299, 39);
+            this.ColorBtn.Name = "ColorBtn";
+            this.ColorBtn.Size = new System.Drawing.Size(48, 45);
+            this.ColorBtn.TabIndex = 13;
+            this.ColorBtn.Text = "Color";
+            this.ColorBtn.UseVisualStyleBackColor = true;
+            this.ColorBtn.Click += new System.EventHandler(this.ColorBtn_Click);
+            // 
             // AddProjectForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(461, 269);
+            this.Controls.Add(this.ColorBtn);
             this.Controls.Add(this.ProjectDateEnd);
             this.Controls.Add(this.ProjDateStart);
             this.Controls.Add(this.EmptyProjectNameWarningLabel);
@@ -176,5 +189,6 @@
         private System.Windows.Forms.Label EmptyProjectNameWarningLabel;
         private System.Windows.Forms.DateTimePicker ProjDateStart;
         private System.Windows.Forms.DateTimePicker ProjectDateEnd;
+        private System.Windows.Forms.Button ColorBtn;
     }
 }
