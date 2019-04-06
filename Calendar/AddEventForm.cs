@@ -13,6 +13,7 @@ namespace Calendar
 {
     public partial class AddEventForm : Form
     {
+        public event Action<DateTime> EventAdded;
         public AddEventForm()
         {
             InitializeComponent();
@@ -38,13 +39,9 @@ namespace Calendar
             DateTime combined = new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, 0);
             Event newEvent = new Event(EventNameTextBox.Text, combined, EventDescriptionTextBox.Text);
             sql_class.AddEvent(newEvent);
-            MonthlyView mv = new MonthlyView(true);
-            DateTime refreshDate = new DateTime(date.Year, date.Month, date.Day);
-            mv.RefreshDayFrame(refreshDate, newEvent);
-            //MonthlyView.RefreshDayFrame(refreshDate, true, newEvent);
-            //mv.RefreshDayFrame(refreshDate, true, newEvent);
-            //DayFrame d = MonthlyView.dayFrames[0];
-            this.Close();
+            EventAdded(combined);
+            
+            Close();
         }
     }
 }

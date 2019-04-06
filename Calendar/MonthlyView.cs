@@ -12,9 +12,9 @@ namespace Calendar
 {
     public partial class MonthlyView : Form
     {
-        private static int gridSize;
-        private static DayFrame[] dayFrames;
-        public static DateTime current; // the datetime storing the month currently being viewed
+        private int gridSize;
+        private DayFrame[] dayFrames;
+        public DateTime current; // the datetime storing the month currently being viewed
         DateTime today = DateTime.Now; // today's date
 
         public MonthlyView()
@@ -37,8 +37,6 @@ namespace Calendar
             }
             SetMonth(current);
         }
-
-        public MonthlyView(bool x){}
 
         private int getYear(DateTime d)
         {
@@ -81,16 +79,13 @@ namespace Calendar
             int j = 1;
             DayFrame d;
             bool bold = false;
-            if (current.ToString("MMMM yyyy") == today.ToString("MMMM yyyy"))
+            if (current.Month == today.Month && current.Year == today.Year)
             {
                 bold = true;
             }
 
-
-            
-
-                //Stops event appearing on every month
-                for (int i = 0; i < gridSize; i++)
+            //Stops event appearing on every month
+            for (int i = 0; i < gridSize; i++)
             {
                 // todo this should be done inside refreshDayFrame()
                 dayFrames[i].ClearEvents();
@@ -102,10 +97,9 @@ namespace Calendar
             {
                 d = dayFrames[i];
                 // todo turn this part into a function so you can call it in each for loop
-                if (bold == true && Convert.ToInt32(today.ToString("dd")) == j)
+                if (bold && today.Day == j)
                 {
-                    d.Font = new Font("Sans Serif", 8, FontStyle.Bold);
-                    //= new Font("Microsoft Sans Serif", 8.25,FontStyle.Bold);
+                    d.Font = new Font("Sans Serif", 9, FontStyle.Bold);
                 }
                 else
                 {
@@ -158,9 +152,10 @@ namespace Calendar
         {
             var f = new AddEventForm();
             f.ShowDialog();
+            // todo uncomment the next line when the RefreshDayFrame(DateTime date) function is defined
+            // f.EventAdded += new Action<DateTime>(RefreshDayFrame);
         }
 
-        // todo please comment this code
         // todo this function should not take in a newEvent. It should clear everything and re-add all the events 
         // this will allow us later on to order the events chronologically in case they add an event that's out of order
         // I suggest having RefreshDayFrame(DateTime date) for use by AddEventForm

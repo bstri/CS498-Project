@@ -76,6 +76,11 @@ namespace Calendar
             eventLabels.Add(e, l);
         }
 
+        public void AddProject(Project p)
+        {
+
+        }
+
         public void ClearEvents()
         {
             eventLabels.Clear();
