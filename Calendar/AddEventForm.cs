@@ -29,7 +29,7 @@ namespace Calendar
 
         private void SubmitEventButton_Click(object sender, EventArgs e)
         {
-            if(EventNameTextBox.Text == "")
+            if (EventNameTextBox.Text == "")
             {
                 EmptyEventNameWarningLabel.Visible = true;
                 return;
@@ -40,7 +40,7 @@ namespace Calendar
             Event newEvent = new Event(EventNameTextBox.Text, combined, EventDescriptionTextBox.Text);
             sql_class.AddEvent(newEvent);
             EventAdded(combined);
-            
+            //EventAdded?.Invoke(combined);
             Close();
         }
     }

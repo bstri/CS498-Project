@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace Calendar
 {
@@ -84,22 +85,15 @@ namespace Calendar
                 bold = true;
             }
 
-            //Stops event appearing on every month
-            for (int i = 0; i < gridSize; i++)
-            {
-                // todo this should be done inside refreshDayFrame()
-                dayFrames[i].ClearEvents();
-
-            }
-
-            // todo the idea was that you'd call RefreshDayFrame inside each for loop
             for (int i = dayOfWeek; i < nextMonthStart; i++)
             {
                 d = dayFrames[i];
+                bool highlighted = false;
                 // todo turn this part into a function so you can call it in each for loop
                 if (bold && today.Day == j)
                 {
                     d.Font = new Font("Sans Serif", 9, FontStyle.Bold);
+                    highlighted = true;
                 }
                 else
                 {
@@ -107,13 +101,9 @@ namespace Calendar
                 }
                 d.DayNumber = j;
                 d.Enabled = true;
-                DateTime date = new DateTime(year, dayInMonth.Month, j);
-                List<Event> events = sql_class.GetEvents(date);
-                for (int k = 0; k < events.Count; k++)
-                {
-                    d.AddEvent(events[k]);
-                }
 
+                DateTime date = new DateTime(year, dayInMonth.Month, j);
+                RefreshDayFrame(d, date, d.Enabled, highlighted);
                 j++;
             }
             j = 1;
@@ -122,8 +112,9 @@ namespace Calendar
                 d = dayFrames[i];
                 d.DayNumber = j;
                 d.Enabled = false;
+                DateTime date = new DateTime(year, dayInMonth.Month + 1, j);
+                RefreshDayFrame(d, date, d.Enabled, false);
                 j++;
-                // todo events need to be added for these days
             }
             j = prevMLen;
             for(int i = dayOfWeek - 1; i >= 0; i--)
@@ -131,8 +122,9 @@ namespace Calendar
                 d = dayFrames[i];
                 d.DayNumber = j;
                 d.Enabled = false;
+                DateTime date = new DateTime(year, dayInMonth.Month - 1, j);
+                RefreshDayFrame(d, date, d.Enabled, false);
                 j--;
-                // todo events need to be added for these days
             }
         }
 
@@ -153,32 +145,47 @@ namespace Calendar
             var f = new AddEventForm();
             f.ShowDialog();
             // todo uncomment the next line when the RefreshDayFrame(DateTime date) function is defined
-            // f.EventAdded += new Action<DateTime>(RefreshDayFrame);
+            f.EventAdded += new Action<DateTime>(RefreshDayFrame);
         }
 
         // todo this function should not take in a newEvent. It should clear everything and re-add all the events 
         // this will allow us later on to order the events chronologically in case they add an event that's out of order
         // I suggest having RefreshDayFrame(DateTime date) for use by AddEventForm
         // and RefreshDayFrame(DayFrame df, int dayOfMonth, bool enabled, bool highlighted) for use above in SetMonth
-        public void RefreshDayFrame(DateTime date, Event newEvent)
+        //I don't see the reason to hav3eenabled and highlighted as parameters here
+        // so they are still not implemented
+        private void RefreshDayFrame(DayFrame df, DateTime date, bool enabled, bool highlighted)
+        {
+            df.ClearEvents();
+            List<Event> events = sql_class.GetEvents(date);
+            for (int k = 0; k < events.Count; k++)
+            {
+                df.AddEvent(events[k]);
+            }
+        }
+
+        private void RefreshDayFrame(DateTime date)
         {
             DayFrame d = dayFrames[0];
             int correctFrame = -1;
-            
+            bool highlighted = false;
+
+            //Finding Dayframe from DateTime
             if (date.Month == current.Month)
             {
-                for(int i = 0; i < gridSize; i++)
+                for (int i = 0; i < gridSize; i++)
                 {
                     d = dayFrames[i];
                     if (d.Enabled && d.DayNumber == date.Day)
                     {
+                        highlighted = true;
                         correctFrame = i;
                     }
                 }
-            } 
+            }
             else if (date.Month == current.Month - 1 || date.Month == current.Month + 1)
             {
-                for(int i = 0; i < gridSize; i++)
+                for (int i = 0; i < gridSize; i++)
                 {
                     d = dayFrames[i];
                     if (!d.Enabled && d.DayNumber == date.Day)
@@ -187,17 +194,12 @@ namespace Calendar
                     }
                 }
             }
-          
+
             if (correctFrame > -1)
             {
                 d = dayFrames[correctFrame];
+                RefreshDayFrame(d, date, d.Enabled, highlighted);
             }
-
-            if (d != null)
-            {
-                d.AddEvent(newEvent);
-            }
-            
         }
     }
 }
