@@ -143,9 +143,8 @@ namespace Calendar
         private void AddEventButton_Click(object sender, EventArgs e)
         {
             var f = new AddEventForm();
-            f.ShowDialog();
-            // todo uncomment the next line when the RefreshDayFrame(DateTime date) function is defined
             f.EventAdded += new Action<DateTime>(RefreshDayFrame);
+            f.ShowDialog();
         }
 
         // todo this function should not take in a newEvent. It should clear everything and re-add all the events 
