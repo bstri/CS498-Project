@@ -147,12 +147,8 @@ namespace Calendar
             f.ShowDialog();
         }
 
-        // todo this function should not take in a newEvent. It should clear everything and re-add all the events 
-        // this will allow us later on to order the events chronologically in case they add an event that's out of order
-        // I suggest having RefreshDayFrame(DateTime date) for use by AddEventForm
-        // and RefreshDayFrame(DayFrame df, int dayOfMonth, bool enabled, bool highlighted) for use above in SetMonth
-        //I don't see the reason to hav3eenabled and highlighted as parameters here
-        // so they are still not implemented
+        //I don't see the reason to have enabled and highlighted as parameters here
+        // so they are still not implemented - Brad
         private void RefreshDayFrame(DayFrame df, DateTime date, bool enabled, bool highlighted)
         {
             df.ClearEvents();

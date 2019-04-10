@@ -75,6 +75,12 @@
     <Compile Include="AddProjectForm.Designer.cs">
       <DependentUpon>AddProjectForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="DayViewForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DayViewForm.Designer.cs">
+      <DependentUpon>DayViewForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="DbManager.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Event.cs" />
@@ -91,6 +97,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AddProjectForm.resx">
       <DependentUpon>AddProjectForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DayViewForm.resx">
+      <DependentUpon>DayViewForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MonthlyView.resx">
       <DependentUpon>MonthlyView.cs</DependentUpon>
