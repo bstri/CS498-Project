@@ -39,7 +39,7 @@ namespace Calendar
             eventList.MouseClick += new MouseEventHandler((sender, e) => { OnMouseClick(e); }); // propagate mouse click to dayframe
 
             // expand this day when clicked
-            this.MouseClick += new MouseEventHandler((sender, e) => { expandDay(); });
+            this.MouseClick += new MouseEventHandler((sender, e) => { expandDay(this); });
         }
 
         private int _dayNumber;
@@ -55,10 +55,12 @@ namespace Calendar
             }
         }
 
-        private List<Event> events = new List<Event>();
+        public List<Event> events = new List<Event>();
         private Dictionary<Event, Label> eventLabels = new Dictionary<Event, Label>();
         public void AddEvent(Event e)
         {
+            events.Add(e);
+            
             eventList.RowCount++;
 
             Label l = new Label()
@@ -93,9 +95,13 @@ namespace Calendar
             eventList.RowCount = 1;
         }
 
-        private void expandDay()
+        private void expandDay(DayFrame df)
         {
             Debug.WriteLine("Day clicked");
+            //Debug.WriteLine(df.DayNumber);
+            var f = new DayViewForm(df);
+            f.ShowDialog();
+
         }
     }
 }
