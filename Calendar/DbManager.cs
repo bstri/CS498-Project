@@ -38,7 +38,7 @@ namespace Calendar
     //This is the meat of the DB manager.
     public class sql_class
     {
-        private static readonly string dbFileName = "Calendar_db.sqlite";
+        private static readonly string dbFileName = "C:\\Users\\" + Environment.UserName + "\\AppData\\Calendar_db.sqlite";
         private static readonly string testDBFileName = "test_db.sqlite";
 
         private static void initializeDB(string dbFile)
@@ -57,11 +57,16 @@ namespace Calendar
                 string sql_str = "";
                 SQLiteCommand sql_cmd;
 
-                //Create the DB file
-                SQLiteConnection.CreateFile(dbFile);
+            //Create the DB file
+            //or if it already exists we're done here
+            if (System.IO.File.Exists(dbFile))
+            {
+                return; 
+            }
+            SQLiteConnection.CreateFile(dbFile);
 
-                //Connect to the database we just created
-                cal_dbconnection = new SQLiteConnection("Data Source=" + dbFile + ";Version=3;");
+            //Connect to the database we just created
+            cal_dbconnection = new SQLiteConnection("Data Source=" + dbFile + ";Version=3;");
 
                 //Open our database
                 cal_dbconnection.Open();
