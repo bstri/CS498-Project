@@ -230,7 +230,7 @@ namespace Calendar
         }
 
         //todo: figure out how we want to handle projects
-        private static List<sql_row> get_projects(string dbFile)
+        private static List<sql_row> get_projects(string dbFile, int myYear, int myMonth, int myDay)
         {
             //This simply gets all appointments for a given day
 
@@ -243,7 +243,10 @@ namespace Calendar
             cal_dbconnection.Open();
 
             //Queries the appointments for the given date
-            string sql_str = "";//"SELECT ap_name, ap_year, ap_month, ap_day, ap_time, desc FROM appointments WHERE ap_year = " + ap_year + " AND ap_month = " + ap_month + " AND ap_day = " + ap_day + ";";
+            string sql_str = "SELECT name, startYr, startMo, startDay, endYr, endMo, endDay, desc from projects where '" + myMonth + "/" + myDay + "/" + myYear;
+                //"//SELECT ap_name, ap_year, ap_month, ap_day, ap_time, desc FROM appointments WHERE ap_year = " + ap_year + " AND ap_month = " + ap_month + " AND ap_day = " + ap_day + ";";
+            // sql_str = "CREATE TABLE projects (name VARCHAR(250), startYr integer, startMo integer, startDay integer, endYr integer, endMo integer, endDay integer, desc VARCHAR(250), color VARCHAR(250));";
+
             SQLiteCommand sql_cmd;
             sql_cmd = new SQLiteCommand(sql_str, cal_dbconnection);
             SQLiteDataReader sql_rdr = sql_cmd.ExecuteReader();
