@@ -196,5 +196,12 @@ namespace Calendar
                 RefreshDayFrame(d, date, d.Enabled, highlighted);
             }
         }
+
+        private void btnAddProj_Click(object sender, EventArgs e)
+        {
+            var f = new AddProjectForm();
+            //f.EventAdded += new Action<DateTime>(RefreshDayFrame);
+            f.ShowDialog();
+        }
     }
 }
