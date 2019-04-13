@@ -118,7 +118,10 @@ namespace Calendar
 
         private static void destroyDB(string dbFile)
         {
-            // todo delete the dbFile
+            if (System.IO.File.Exists(dbFile))
+            {
+                System.IO.File.Delete(dbFile);
+            }
         }
 
         public static void DestroyDB()
