@@ -69,23 +69,14 @@ namespace Calendar
     public class sql_class
     {
         private static readonly string dbFileName = "C:\\Users\\" + Environment.UserName + "\\AppData\\Calendar_db.sqlite";
-        private static readonly string testDBFileName = "test_db.sqlite";
+        private static readonly string testDBFileName = "C:\\Users\\" + Environment.UserName + "\\AppData\\test_db.sqlite";
 
         private static void initializeDB(string dbFile)
         {
-            //Only bother with database creation if one doesn't exist.
-            //This also allows us to call this function each time we
-            //start the program.
-
-            //Should consider putting this in an absolute location
-            //so if the user moves the calendar program it can still
-            //find the DB.
-            //if (!File.Exists("Calendar_db.sqlite"))
-           // {
-                //VARS
-                SQLiteConnection cal_dbconnection;
-                string sql_str = "";
-                SQLiteCommand sql_cmd;
+ 
+            SQLiteConnection cal_dbconnection;
+            string sql_str = "";
+            SQLiteCommand sql_cmd;
 
             //Create the DB file
             //or if it already exists we're done here
@@ -98,22 +89,21 @@ namespace Calendar
             //Connect to the database we just created
             cal_dbconnection = new SQLiteConnection("Data Source=" + dbFile + ";Version=3;");
 
-                //Open our database
-                cal_dbconnection.Open();
+            //Open our database
+            cal_dbconnection.Open();
 
-                //Create the appointments table
-                sql_str = "CREATE TABLE appointments (ap_name VARCHAR(250), ap_year integer, ap_month integer, ap_day integer, ap_time varchar(5), desc VARCHAR(250));";
-                sql_cmd = new SQLiteCommand(sql_str, cal_dbconnection);
-                sql_cmd.ExecuteNonQuery();
+            //Create the appointments table
+            sql_str = "CREATE TABLE appointments (ap_name VARCHAR(250), ap_year integer, ap_month integer, ap_day integer, ap_time varchar(5), desc VARCHAR(250));";
+            sql_cmd = new SQLiteCommand(sql_str, cal_dbconnection);
+            sql_cmd.ExecuteNonQuery();
 
             //Create the projects table
-                sql_str = "CREATE TABLE projects (name VARCHAR(250), startYr integer, startMo integer, startDay integer, endYr integer, endMo integer, endDay integer, desc VARCHAR(250), color VARCHAR(250));";
-                sql_cmd = new SQLiteCommand(sql_str, cal_dbconnection);
-                sql_cmd.ExecuteNonQuery();
+            sql_str = "CREATE TABLE projects (name VARCHAR(250), startYr integer, startMo integer, startDay integer, endYr integer, endMo integer, endDay integer, desc VARCHAR(250), color VARCHAR(250));";
+            sql_cmd = new SQLiteCommand(sql_str, cal_dbconnection);
+            sql_cmd.ExecuteNonQuery();
 
-                //Finally, we close the database/connection
-                cal_dbconnection.Close();
-           // }
+            //Finally, we close the database/connection
+            cal_dbconnection.Close();
         }
 
         public static void InitializeDB()
@@ -177,13 +167,21 @@ namespace Calendar
 
         private static bool addEvent(string dbFile, Event e)
         {
-
-            //Name, Description, When
-            //(Name String, When Datetime, Description String)
-            //public static int insert_appointment(int ap_year, int ap_month, int ap_day, string ap_time, string apt_desc)
             int retval = 0;
             retval = insert_appointment(dbFile, e.Name, e.When.Year, e.When.Month, e.When.Day, e.When.ToString("hh:mm"), e.Description);
             return retval == 1;
+        }
+
+        private static bool deleteAppointment(string dbFile, Event e)
+        {
+            int retval = 0;
+            retval = delete_appointment(dbFile, e.Name, e.When.Year, e.When.Month, e.When.Day, e.When.ToString("hh:mm"), e.Description);
+            return retval == 1;
+        }
+
+        public static bool DeleteAppointment(Event e)
+        {
+            return deleteAppointment(dbFileName, e);
         }
 
         public static bool AddEvent(Event e)
@@ -281,6 +279,31 @@ namespace Calendar
             //Insert the row here.
             string sql_str = "INSERT INTO appointments values ('" + ap_name + "', " + ap_year + ", " + ap_month + ", " + ap_day + ", '" + ap_time + "', '" + apt_desc + "');";
             //Console.WriteLine(sql_str); //TESTING REMOVE LATER
+            Console.WriteLine(sql_str);
+            SQLiteCommand sql_cmd;
+            sql_cmd = new SQLiteCommand(sql_str, cal_dbconnection);
+            row_num = sql_cmd.ExecuteNonQuery();
+
+            //Finally, close our connection and return a 1 if success.
+            cal_dbconnection.Close();
+            return row_num;
+
+        }
+
+        private static int delete_appointment(string dbFile, string ap_name, int ap_year, int ap_month, int ap_day, string ap_time, string apt_desc)
+        {
+            //This function removes an appointment based on the parameters.
+
+            //Connect to the database.
+            SQLiteConnection cal_dbconnection;
+            cal_dbconnection = new SQLiteConnection("Data Source=" + dbFile + ";Version=3;");
+            cal_dbconnection.Open();
+
+            //Row num will be an integer recording the number of rows affected.
+            int row_num = 0;
+
+            //Delete the row here.
+            string sql_str = "DELETE FROM appointments WHERE ap_name = '" + ap_name + "' AND ap_year = " + ap_year + " AND ap_month = " + ap_month + " AND ap_day = " + ap_day + " and ap_time = '" + ap_time + "' and desc = '" + apt_desc + "';";
             Console.WriteLine(sql_str);
             SQLiteCommand sql_cmd;
             sql_cmd = new SQLiteCommand(sql_str, cal_dbconnection);

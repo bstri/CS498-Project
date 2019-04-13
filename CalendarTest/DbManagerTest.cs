@@ -21,6 +21,24 @@ namespace CalendarTest
         }
 
         [TestMethod]
+        public void TestInitializetrue()
+        {
+            sql_class.InitializeDB();
+        }
+
+        [TestMethod]
+        public void TestDeleteAppointment()
+        {
+            DateTime now = DateTime.Now;
+            DateTime dt = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, 0); // important to use 0 for seconds since dbmanager doesn't store seconds
+            Event e = new Event("testEvent", dt, "testDescription");
+            sql_class.AddEvent(e);
+            sql_class.DeleteAppointment(e);
+            List<Event> events = sql_class.GetEvents(dt);
+            Assert.AreEqual(0, events.Count);
+        }
+
+        [TestMethod]
         public void TestAddEvent()
         {
             DateTime now = DateTime.Now;
