@@ -352,7 +352,7 @@ namespace Calendar
 
         }
 
-        public static int insert_project(string dbFile, string name, int startYear, int startMonth, int startDay, int endYear, int endMonth, int endDay, string color, string desc)
+        public static int insert_project(string dbFile, string name, int startYear, int startMonth, int startDay, int endYear, int endMonth, int endDay, int colorA, int colorR, int colorG, int colorB, string desc)
         {
 
             //Connect to the database.
@@ -364,7 +364,7 @@ namespace Calendar
             int row_num = 0;
 
             //Insert the row here.
-            string sql_str = "INSERT INTO projects values ('" + name + "', " + startYear + ", " + startMonth + ", " + startDay + ", " + endYear + ", " + endMonth + ", " + endDay + ", '" + desc + "', '" + color + "');";
+            string sql_str = "INSERT INTO projects values ('" + name + "', " + startYear + ", " + startMonth + ", " + startDay + ", " + endYear + ", " + endMonth + ", " + endDay + ", '" + desc + "', " + colorA + ", " + colorR + ", " + colorG + ", " + colorB + ");";
             SQLiteCommand sql_cmd;
             sql_cmd = new SQLiteCommand(sql_str, cal_dbconnection);
             row_num = sql_cmd.ExecuteNonQuery();
