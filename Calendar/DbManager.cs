@@ -289,7 +289,7 @@ namespace Calendar
                 //We only want to add it here if it meets our criteria. Too difficult to check this using SQLite because
                 //It is date DUMB so we do it here.
 
-                proj_row tmp_row = new proj_row((string)sql_rdr["name"], (long)sql_rdr["startYr"], (long)sql_rdr["startMo"], (long)sql_rdr["startDay"], (long)sql_rdr["endYr"], (long)sql_rdr["endMo"], (long)sql_rdr["endDay"], System.Drawing.Color.FromArgb((int)sql_rdr["colorA"], (int)sql_rdr["colorR"], (int)sql_rdr["colorG"], (int)sql_rdr["colorB"]), (string)sql_rdr["desc"]);
+                proj_row tmp_row = new proj_row((string)sql_rdr["name"], (long)sql_rdr["startYr"], (long)sql_rdr["startMo"], (long)sql_rdr["startDay"], (long)sql_rdr["endYr"], (long)sql_rdr["endMo"], (long)sql_rdr["endDay"], System.Drawing.Color.FromArgb((int)(long)sql_rdr["colorA"], (int)(long)sql_rdr["colorR"], (int)(long)sql_rdr["colorG"], (int)(long)sql_rdr["colorB"]), (string)sql_rdr["desc"]);
                 DateTime stdt = new DateTime((int)tmp_row.startYear, (int)tmp_row.startMonth, (int)tmp_row.startDay, 0, 0, 0);
                 DateTime endt = new DateTime((int)tmp_row.endYear, (int)tmp_row.endMonth, (int)tmp_row.endDay, 0, 0, 0);
                 if (mydt >= stdt && mydt <= endt)

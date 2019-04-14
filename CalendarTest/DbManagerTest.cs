@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Calendar;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace CalendarTest
 {

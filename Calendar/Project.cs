@@ -13,9 +13,9 @@ namespace Calendar
         public readonly string Description;
         public readonly DateTime Start;
         public readonly DateTime End;
-        public readonly Color Color;
+        public readonly System.Drawing.Color Color;
 
-        public Project(string name, DateTime start, DateTime end, Color color, string description = "")
+        public Project(string name, DateTime start, DateTime end, System.Drawing.Color color, string description = "")
         {
             Name = name;
             Start = start;
