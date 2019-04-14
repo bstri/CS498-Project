@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using System.Data.SQLite;
 using System.Globalization;
+using System.Diagnostics;
 
 
 namespace Calendar
@@ -158,9 +159,34 @@ namespace Calendar
             return events;
         }
 
+        private static List<Project> getProjects(string dbFile, DateTime d)
+        {
+            List<Project> projects = new List<Project>();
+            List<proj_row> ret_list = get_projects(dbFile, d.Year, d.Month, d.Day);
+            string tmpString = "";
+            string tmpString2 = "";
+            foreach (proj_row row in ret_list)
+            {
+                tmpString = (row.startDay.ToString() + "-" + row.startMonth.ToString() + "-" + row.startYear.ToString());
+                DateTime dtmp = DateTime.ParseExact(tmpString, "d-M-yyyy", CultureInfo.InvariantCulture);
+                tmpString2 = (row.endDay.ToString() + "-" + row.endMonth.ToString() + "-" + row.endYear.ToString());
+                DateTime dtmp2 = DateTime.ParseExact(tmpString, "d-M-yyyy", CultureInfo.InvariantCulture);
+                Project p = new Project(row.projName, dtmp, dtmp2, (ConsoleColor)Enum.Parse(typeof(ConsoleColor), row.color), row.desc);
+                projects.Add(p);
+            }
+
+            return projects;
+        }
+
         public static List<Event> GetEvents(DateTime d)
         {
             return getEvents(dbFileName, d);
+        }
+
+        public static List<Project> GetProjects(DateTime d)
+        {
+            Console.WriteLine("hello");
+            return getProjects(dbFileName, d);
         }
 
         public static List<Event> GetTestEvents(DateTime d)
@@ -172,6 +198,14 @@ namespace Calendar
         {
             int retval = 0;
             retval = insert_appointment(dbFile, e.Name, e.When.Year, e.When.Month, e.When.Day, e.When.ToString("hh:mm"), e.Description);
+            return retval == 1;
+        }
+
+        private static bool addProject(string dbFile, Project p)
+        {
+            int retval = 0;
+            //insert_project(string dbFile, string name, int startYear, int startMonth, int startDay, int endYear, int endMonth, int endDay, string desc)
+            retval = insert_project(dbFile, p.Name, p.Start.Year, p.Start.Month, p.Start.Day, p.End.Year, p.End.Month, p.End.Day, p.Color.ToString(), p.Description); //p.When.Year, e.When.Month, e.When.Day, e.When.ToString("hh:mm"), e.Description);
             return retval == 1;
         }
 
@@ -190,6 +224,11 @@ namespace Calendar
         public static bool AddEvent(Event e)
         {
             return addEvent(dbFileName, e);
+        }
+
+        public static bool AddProject(Project p)
+        {
+            return addProject(dbFileName, p);
         }
 
         public static bool AddTestEvent(Event e)
@@ -231,34 +270,33 @@ namespace Calendar
         }
 
         //todo: figure out how we want to handle projects
-        private static List<sql_row> get_projects(string dbFile, int myYear, int myMonth, int myDay)
+        private static List<proj_row> get_projects(string dbFile, int myYear, int myMonth, int myDay)
         {
-            //This simply gets all appointments for a given day
-
-            //Connect to the database.
-            //This doesn't bother checking to see if the DB exists at this point
-            //as it operates under the assumption that initialize_db() is always
-            //run at the start of the program.
             SQLiteConnection cal_dbconnection;
             cal_dbconnection = new SQLiteConnection("Data Source=" + dbFile + ";Version=3;");
             cal_dbconnection.Open();
+            DateTime mydt = new DateTime(myYear, myMonth, myDay, 0, 0, 0);
 
-            //Queries the appointments for the given date
-            string sql_str = "SELECT name, startYr, startMo, startDay, endYr, endMo, endDay, desc from projects where '" + myMonth + "/" + myDay + "/" + myYear;
-                //"//SELECT ap_name, ap_year, ap_month, ap_day, ap_time, desc FROM appointments WHERE ap_year = " + ap_year + " AND ap_month = " + ap_month + " AND ap_day = " + ap_day + ";";
-            // sql_str = "CREATE TABLE projects (name VARCHAR(250), startYr integer, startMo integer, startDay integer, endYr integer, endMo integer, endDay integer, desc VARCHAR(250), color VARCHAR(250));";
+            string sql_str = "SELECT name, startYr, startMo, startDay, endYr, endMo, endDay, color, desc from projects;"; //where ('" + myYear + "|| '-' ||" + myMonth + "|| '-' ||" + myDay + "') BETWEEN ('startYr || '-' || startMo || '-' || startDay') AND ('endYr || '-' || endMo || '-' || endDay');"; //(;//2011 || '-' || 1 || '-' || 1
 
             SQLiteCommand sql_cmd;
             sql_cmd = new SQLiteCommand(sql_str, cal_dbconnection);
             SQLiteDataReader sql_rdr = sql_cmd.ExecuteReader();
 
-            //List of sql_row objects to store our results.
-            var ret_list = new List<sql_row>();
+            var ret_list = new List<proj_row>();
             while (sql_rdr.Read())
             {
-                //Console.WriteLine(Convert.ToInt64(sql_rdr["seqno"]));
-                //sql_row tmp_row = new sql_row((string)sql_rdr["ap_name"], (long)sql_rdr["ap_year"], (long)sql_rdr["ap_month"], (long)sql_rdr["ap_day"], (string)sql_rdr["ap_time"], (string)sql_rdr["desc"]);
-                //ret_list.Add(tmp_row);
+                //We only want to add it here if it meets our criteria. Too difficult to check this using SQLite because
+                //It is date DUMB so we do it here.
+
+                proj_row tmp_row = new proj_row((string)sql_rdr["name"], (long)sql_rdr["startYr"], (long)sql_rdr["startMo"], (long)sql_rdr["startDay"], (long)sql_rdr["endYr"], (long)sql_rdr["endMo"], (long)sql_rdr["endDay"], (string)sql_rdr["color"], (string)sql_rdr["desc"]);
+                DateTime stdt = new DateTime((int)tmp_row.startYear, (int)tmp_row.startMonth, (int)tmp_row.startDay, 0, 0, 0);
+                DateTime endt = new DateTime((int)tmp_row.endYear, (int)tmp_row.endMonth, (int)tmp_row.endDay, 0, 0, 0);
+                if (mydt >= stdt && mydt <= endt)
+                {
+                    ret_list.Add(tmp_row);
+                }
+                
             }
 
             //Finally, close our connection and return the results.
@@ -281,8 +319,6 @@ namespace Calendar
 
             //Insert the row here.
             string sql_str = "INSERT INTO appointments values ('" + ap_name + "', " + ap_year + ", " + ap_month + ", " + ap_day + ", '" + ap_time + "', '" + apt_desc + "');";
-            //Console.WriteLine(sql_str); //TESTING REMOVE LATER
-            Console.WriteLine(sql_str);
             SQLiteCommand sql_cmd;
             sql_cmd = new SQLiteCommand(sql_str, cal_dbconnection);
             row_num = sql_cmd.ExecuteNonQuery();
@@ -290,7 +326,6 @@ namespace Calendar
             //Finally, close our connection and return a 1 if success.
             cal_dbconnection.Close();
             return row_num;
-
         }
 
         private static int delete_appointment(string dbFile, string ap_name, int ap_year, int ap_month, int ap_day, string ap_time, string apt_desc)
@@ -307,7 +342,6 @@ namespace Calendar
 
             //Delete the row here.
             string sql_str = "DELETE FROM appointments WHERE ap_name = '" + ap_name + "' AND ap_year = " + ap_year + " AND ap_month = " + ap_month + " AND ap_day = " + ap_day + " and ap_time = '" + ap_time + "' and desc = '" + apt_desc + "';";
-            Console.WriteLine(sql_str);
             SQLiteCommand sql_cmd;
             sql_cmd = new SQLiteCommand(sql_str, cal_dbconnection);
             row_num = sql_cmd.ExecuteNonQuery();
@@ -318,9 +352,8 @@ namespace Calendar
 
         }
 
-        private static int insert_project(string dbFile, string name, int startYear, int startMonth, int startDay, int endYear, int endMonth, int endDay, string desc)
+        public static int insert_project(string dbFile, string name, int startYear, int startMonth, int startDay, int endYear, int endMonth, int endDay, string color, string desc)
         {
-            //This function simply creates an appointment based on the parameters.
 
             //Connect to the database.
             SQLiteConnection cal_dbconnection;
@@ -331,10 +364,7 @@ namespace Calendar
             int row_num = 0;
 
             //Insert the row here.
-            string sql_str = "INSERT INTO project values ('" + name + "', " + startYear + ", " + startMonth + ", " + startDay + ", " + endYear + ", " + endMonth + ", " + endDay + ", '" + desc + "');";
-            // sql_str = "CREATE TABLE projects (name VARCHAR(250), startYr integer, startMo integer, startDay integer, endYr integer, endMo integer, endDay integer, desc VARCHAR(250), color VARCHAR(250));";
-            //Console.WriteLine(sql_str); //TESTING REMOVE LATER
-            Console.WriteLine(sql_str);
+            string sql_str = "INSERT INTO projects values ('" + name + "', " + startYear + ", " + startMonth + ", " + startDay + ", " + endYear + ", " + endMonth + ", " + endDay + ", '" + desc + "', '" + color + "');";
             SQLiteCommand sql_cmd;
             sql_cmd = new SQLiteCommand(sql_str, cal_dbconnection);
             row_num = sql_cmd.ExecuteNonQuery();
@@ -345,4 +375,4 @@ namespace Calendar
 
         }
     }
-} //public Project(string name, DateTime start, DateTime end, ConsoleColor color, string description = "")
+}
