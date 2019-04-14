@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace Calendar
 {
@@ -12,9 +13,9 @@ namespace Calendar
         public readonly string Description;
         public readonly DateTime Start;
         public readonly DateTime End;
-        public readonly ConsoleColor Color;
+        public readonly Color Color;
 
-        public Project(string name, DateTime start, DateTime end, ConsoleColor color, string description = "")
+        public Project(string name, DateTime start, DateTime end, Color color, string description = "")
         {
             Name = name;
             Start = start;

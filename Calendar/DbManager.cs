@@ -40,7 +40,7 @@ namespace Calendar
     {
         public proj_row() { }
 
-        public proj_row(string name, long styear, long stmonth, long stday, long eyear, long emonth, long eday, string myColor, string descr)
+        public proj_row(string name, long styear, long stmonth, long stday, long eyear, long emonth, long eday, System.Drawing.Color myColor, string descr)
         {
             projName = name;
             startYear = styear;
@@ -61,7 +61,7 @@ namespace Calendar
         public long endYear { get; set; }
         public long endMonth { get; set; }
         public long endDay { get; set; }
-        public string color { get; set; }
+        public System.Drawing.Color color { get; set; }
         public string desc { get; set; }
 
     }
@@ -99,7 +99,7 @@ namespace Calendar
             sql_cmd.ExecuteNonQuery();
 
             //Create the projects table
-            sql_str = "CREATE TABLE projects (name VARCHAR(250), startYr integer, startMo integer, startDay integer, endYr integer, endMo integer, endDay integer, desc VARCHAR(250), color VARCHAR(250));";
+            sql_str = "CREATE TABLE projects (name VARCHAR(250), startYr integer, startMo integer, startDay integer, endYr integer, endMo integer, endDay integer, desc VARCHAR(250), colorA integer, colorR integer, colorG integer, colorB integer);";
             sql_cmd = new SQLiteCommand(sql_str, cal_dbconnection);
             sql_cmd.ExecuteNonQuery();
 
@@ -171,7 +171,7 @@ namespace Calendar
                 DateTime dtmp = DateTime.ParseExact(tmpString, "d-M-yyyy", CultureInfo.InvariantCulture);
                 tmpString2 = (row.endDay.ToString() + "-" + row.endMonth.ToString() + "-" + row.endYear.ToString());
                 DateTime dtmp2 = DateTime.ParseExact(tmpString, "d-M-yyyy", CultureInfo.InvariantCulture);
-                Project p = new Project(row.projName, dtmp, dtmp2, (ConsoleColor)Enum.Parse(typeof(ConsoleColor), row.color), row.desc);
+                Project p = new Project(row.projName, dtmp, dtmp2, row.color, row.desc);
                 projects.Add(p);
             }
 
@@ -205,7 +205,7 @@ namespace Calendar
         {
             int retval = 0;
             //insert_project(string dbFile, string name, int startYear, int startMonth, int startDay, int endYear, int endMonth, int endDay, string desc)
-            retval = insert_project(dbFile, p.Name, p.Start.Year, p.Start.Month, p.Start.Day, p.End.Year, p.End.Month, p.End.Day, p.Color.ToString(), p.Description); //p.When.Year, e.When.Month, e.When.Day, e.When.ToString("hh:mm"), e.Description);
+            retval = insert_project(dbFile, p.Name, p.Start.Year, p.Start.Month, p.Start.Day, p.End.Year, p.End.Month, p.End.Day, p.Color.A, p.Color.R, p.Color.G, p.Color.B, p.Description); //p.When.Year, e.When.Month, e.When.Day, e.When.ToString("hh:mm"), e.Description);
             return retval == 1;
         }
 
@@ -277,7 +277,7 @@ namespace Calendar
             cal_dbconnection.Open();
             DateTime mydt = new DateTime(myYear, myMonth, myDay, 0, 0, 0);
 
-            string sql_str = "SELECT name, startYr, startMo, startDay, endYr, endMo, endDay, color, desc from projects;"; //where ('" + myYear + "|| '-' ||" + myMonth + "|| '-' ||" + myDay + "') BETWEEN ('startYr || '-' || startMo || '-' || startDay') AND ('endYr || '-' || endMo || '-' || endDay');"; //(;//2011 || '-' || 1 || '-' || 1
+            string sql_str = "SELECT name, startYr, startMo, startDay, endYr, endMo, endDay, colorA, colorR, colorG, colorB, desc from projects;"; //where ('" + myYear + "|| '-' ||" + myMonth + "|| '-' ||" + myDay + "') BETWEEN ('startYr || '-' || startMo || '-' || startDay') AND ('endYr || '-' || endMo || '-' || endDay');"; //(;//2011 || '-' || 1 || '-' || 1
 
             SQLiteCommand sql_cmd;
             sql_cmd = new SQLiteCommand(sql_str, cal_dbconnection);
@@ -289,7 +289,7 @@ namespace Calendar
                 //We only want to add it here if it meets our criteria. Too difficult to check this using SQLite because
                 //It is date DUMB so we do it here.
 
-                proj_row tmp_row = new proj_row((string)sql_rdr["name"], (long)sql_rdr["startYr"], (long)sql_rdr["startMo"], (long)sql_rdr["startDay"], (long)sql_rdr["endYr"], (long)sql_rdr["endMo"], (long)sql_rdr["endDay"], (string)sql_rdr["color"], (string)sql_rdr["desc"]);
+                proj_row tmp_row = new proj_row((string)sql_rdr["name"], (long)sql_rdr["startYr"], (long)sql_rdr["startMo"], (long)sql_rdr["startDay"], (long)sql_rdr["endYr"], (long)sql_rdr["endMo"], (long)sql_rdr["endDay"], System.Drawing.Color.FromArgb((int)sql_rdr["colorA"], (int)sql_rdr["colorR"], (int)sql_rdr["colorG"], (int)sql_rdr["colorB"]), (string)sql_rdr["desc"]);
                 DateTime stdt = new DateTime((int)tmp_row.startYear, (int)tmp_row.startMonth, (int)tmp_row.startDay, 0, 0, 0);
                 DateTime endt = new DateTime((int)tmp_row.endYear, (int)tmp_row.endMonth, (int)tmp_row.endDay, 0, 0, 0);
                 if (mydt >= stdt && mydt <= endt)
