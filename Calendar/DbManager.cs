@@ -364,7 +364,7 @@ namespace Calendar
             int row_num = 0;
 
             //Insert the row here.
-            string sql_str = "INSERT INTO projects values ('" + name + "', " + startYear + ", " + startMonth + ", " + startDay + ", " + endYear + ", " + endMonth + ", " + endDay + ", '" + desc + "', " + colorA + ", " + colorR + ", " + colorG + ", " + colorB + ");";
+            string sql_str = "INSERT INTO projects values ('" + name + "', " + startYear + ", " + startMonth + ", " + startDay + ", " + endYear + ", " + endMonth + ", " + endDay + ", " + colorA + ", " + colorR + ", " + colorG + ", " + colorB + ", '" + desc + "');";
             SQLiteCommand sql_cmd;
             sql_cmd = new SQLiteCommand(sql_str, cal_dbconnection);
             row_num = sql_cmd.ExecuteNonQuery();

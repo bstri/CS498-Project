@@ -58,7 +58,7 @@ namespace CalendarTest
             sql_class.InitializeDB();
             DateTime now = DateTime.Now;
             DateTime dt = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, 0); // important to use 0 for seconds since dbmanager doesn't store seconds
-            ConsoleColor testColor = ConsoleColor.Red;
+            System.Drawing.Color testColor = System.Drawing.Color.Red;
             DateTime dt2 = new DateTime(2019, 12, 25, 0, 0, 0);
             Project p = new Project("test proj", dt, dt2, testColor, "test description");
             List<Project> projs_before = sql_class.GetProjects(dt);
@@ -75,7 +75,7 @@ namespace CalendarTest
             sql_class.InitializeDB();
             DateTime now = DateTime.Now;
             DateTime dt = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, 0); // important to use 0 for seconds since dbmanager doesn't store seconds
-            ConsoleColor testColor = ConsoleColor.Red;
+            System.Drawing.Color testColor = System.Drawing.Color.AliceBlue;
             DateTime dt2 = new DateTime(2019, 12, 25, 0, 0, 0);
             DateTime dt3 = new DateTime(2019, 12, 26, 0, 0, 0);
             Project p = new Project("test proj", dt, dt2, testColor, "test description");
