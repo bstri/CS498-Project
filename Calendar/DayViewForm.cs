@@ -45,7 +45,7 @@ namespace Calendar
                 item.SubItems.Add(df.events[i].Name);
                 item.SubItems.Add(df.events[i].Description);
                 listView.Items.AddRange(new ListViewItem[] { item });
-                //Button edit = new Button();
+                //Button edit = new Button()=-
                 //is.Controls.Add(edit);
                 AddButtons(i);
             }
@@ -69,6 +69,7 @@ namespace Calendar
             newEdit.Font = new Font(newEdit.Font.FontFamily, 6);
             newEdit.Location = new Point(310, 35 + eventNumber*18);
             this.Controls.Add(newEdit);
+            
 
             Button delete = new Button();
             delete.Width = 50;
@@ -77,13 +78,14 @@ namespace Calendar
             delete.Font = new Font(newEdit.Font.FontFamily, 6);
             delete.Location = new Point(350, 35 + eventNumber * 18);
             this.Controls.Add(delete);
+            delete.Click += new EventHandler(delete_Click);
         }
 
-       /* private void button1_Click(object sender, System.EventArgs e)
+        //Remove event from database, RefreshDayFrame, strike out event in 
+        //DayView or reload dayview 
+        private void delete_Click(object sender, System.EventArgs e)
         {
-            TextBox myText = new TextBox();
-            myText.Location = new Point(25, 25);
-            this.Controls.Add(myText);
-        }*/
+            
+        }
     }
 }

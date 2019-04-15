@@ -154,9 +154,10 @@ namespace Calendar
             df.ClearEvents();
             List<Event> events = sql_class.GetEvents(date);
             List<Project> proj = sql_class.GetProjects(date);
+            List<Event> SortedEvents = events.OrderBy(o => o.When).ToList();    //sorts events by Date
             for (int k = 0; k < events.Count; k++)
             {
-                df.AddEvent(events[k]);
+                df.AddEvent(SortedEvents[k]);
                 
             }
             for (int k = 0; k < proj.Count; k++)
