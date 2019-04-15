@@ -153,10 +153,18 @@ namespace Calendar
         {
             df.ClearEvents();
             List<Event> events = sql_class.GetEvents(date);
+            List<Project> proj = sql_class.GetProjects(date);
             for (int k = 0; k < events.Count; k++)
             {
                 df.AddEvent(events[k]);
+                
             }
+            for (int k = 0; k < proj.Count; k++)
+            {
+                df.AddProject(proj[k]);
+
+            }
+            
         }
 
         private void RefreshDayFrame(DateTime date)
@@ -195,6 +203,18 @@ namespace Calendar
                 d = dayFrames[correctFrame];
                 RefreshDayFrame(d, date, d.Enabled, highlighted);
             }
+        }
+
+        private void btnAddProj_Click(object sender, EventArgs e)
+        {
+            var f = new AddProjectForm();
+            //f.EventAdded += new Action<DateTime>(RefreshDayFrame);
+            f.ShowDialog();
+        }
+
+        private void DayGrid_CellPaint(object sender, TableLayoutCellPaintEventArgs e)
+        {
+            if (dayFrames.)
         }
     }
 }
