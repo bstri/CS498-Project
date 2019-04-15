@@ -32,14 +32,18 @@ namespace Calendar
             listView.Bounds = new Rectangle(new Point(10, 10), new Size(300, 200));
             listView.View = View.Details;
             listView.GridLines = true;
+            listView.Columns.Add("", -2, HorizontalAlignment.Left);
+            listView.Columns.Add("Time", -2, HorizontalAlignment.Left);
+            listView.Columns.Add("Name", -2, HorizontalAlignment.Left);
+            listView.Columns.Add("Description", -2, HorizontalAlignment.Left);
 
             DateTime eventTime;
-            
+
             for (int i = 0; i < df.events.Count; i++)
             {
                 string eventHeader = "Event " + (i + 1);
                 ListViewItem item = new ListViewItem(eventHeader, 0);
-                Debug.WriteLine(df.events[i].Description);
+                //Debug.WriteLine(df.events[i].Description);
                 eventTime = df.events[i].When;
                 item.SubItems.Add(eventTime.ToString("hh:mm tt"));
                 item.SubItems.Add(df.events[i].Name);
@@ -47,20 +51,16 @@ namespace Calendar
                 listView.Items.AddRange(new ListViewItem[] { item });
                 //Button edit = new Button()=-
                 //is.Controls.Add(edit);
-                AddButtons(i);
+                AddButtons(i, df, listView);
             }
 
-            listView.Columns.Add("", -2, HorizontalAlignment.Left);
-            listView.Columns.Add("Time", -2, HorizontalAlignment.Left);
-            listView.Columns.Add("Name", -2, HorizontalAlignment.Left);
-            listView.Columns.Add("Description", -2, HorizontalAlignment.Left);
+            
 
             this.Controls.Add(listView);
-
-
+            
         }
 
-        private void AddButtons(int eventNumber)
+        private void AddButtons(int eventNumber, DayFrame df, ListView listView)
         {
             Button newEdit = new Button();
             newEdit.Width = 40;
@@ -78,14 +78,18 @@ namespace Calendar
             delete.Font = new Font(newEdit.Font.FontFamily, 6);
             delete.Location = new Point(350, 35 + eventNumber * 18);
             this.Controls.Add(delete);
-            delete.Click += new EventHandler(delete_Click);
+            delete.Click += (sender, EventArgs) => { delete_Click(sender, EventArgs, eventNumber, df, listView); };
         }
 
         //Remove event from database, RefreshDayFrame, strike out event in 
         //DayView or reload dayview 
-        private void delete_Click(object sender, System.EventArgs e)
+        private void delete_Click(object sender, System.EventArgs e, int eventNumber, DayFrame df, ListView listView)
         {
-            
+            sql_class.DeleteAppointment(df.events[eventNumber]);    //delete from database
+            listView.Items.RemoveAt(eventNumber);
+            ListViewItem item = new ListViewItem("", 0);
+            listView.Items.Insert(eventNumber, item);
+            this.Controls.Add(listView);
         }
     }
 }

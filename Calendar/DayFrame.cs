@@ -100,8 +100,24 @@ namespace Calendar
             Debug.WriteLine("Day clicked");
             //Debug.WriteLine(df.DayNumber);
             var f = new DayViewForm(df);
-            f.ShowDialog();
 
+            f.ShowDialog();
+            refreshDay(df);
+
+        }
+
+        public void refreshDay(DayFrame df)
+        {
+            DateTime date;
+            date = df.events[0].When;
+            df.ClearEvents();
+            List<Event> events = sql_class.GetEvents(date);
+            List<Event> SortedEvents = events.OrderBy(o => o.When).ToList();    //sorts events by Date
+            for (int k = 0; k < events.Count; k++)
+            {
+                df.AddEvent(SortedEvents[k]);
+
+            }
         }
     }
 }
