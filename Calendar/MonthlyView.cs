@@ -214,7 +214,6 @@ namespace Calendar
 
         private void DayGrid_CellPaint(object sender, TableLayoutCellPaintEventArgs e)
         {
-            if (dayFrames.)
         }
     }
 }
