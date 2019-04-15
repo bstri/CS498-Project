@@ -27,6 +27,27 @@ namespace Calendar
             EventTimePicker.Value = d;
         }
 
+        public string EventName
+        {
+            get { return EventNameTextBox.Text; }
+            set { EventNameTextBox.Text = value; }
+        }
+
+        public string EventDesc
+        {
+            set { EventDescriptionTextBox.Text = value; }
+        }
+
+        public DateTime EventTime
+        {
+            set { EventTimePicker.Value = value; }
+        }
+
+        //public Event newEvent
+        //{
+        //    get { return newEvent; }
+        //}
+
         private void SubmitEventButton_Click(object sender, EventArgs e)
         {
             if (EventNameTextBox.Text == "")
@@ -39,7 +60,8 @@ namespace Calendar
             DateTime combined = new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, 0);
             Event newEvent = new Event(EventNameTextBox.Text, combined, EventDescriptionTextBox.Text);
             sql_class.AddEvent(newEvent);
-            EventAdded(combined);
+            if (EventAdded != null) { EventAdded(combined); }
+            
             //EventAdded?.Invoke(combined);
             Close();
         }

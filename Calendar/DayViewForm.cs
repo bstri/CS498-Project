@@ -19,13 +19,7 @@ namespace Calendar
             CreateListView(df);
         }
 
-        //Todo: 
-        //      -Have description keep formatting
-        //      
-        //      -Buttons on each event that will delete the event, which will need to interface with the database and update MonthlyView_
-        //      -Ability to edit events--their name, date and/or time, description.. This can simply delete the old event and put a new one 
-        //          in by popping up the AddEvent form with all the forms being pre-set to the event being edited. Update the verbose view and monthlyview once the edit is finished
-
+        //Todo: Have description keep formatting
         private void CreateListView(DayFrame df)
         {
             ListView listView = new ListView();
@@ -43,14 +37,11 @@ namespace Calendar
             {
                 string eventHeader = "Event " + (i + 1);
                 ListViewItem item = new ListViewItem(eventHeader, 0);
-                //Debug.WriteLine(df.events[i].Description);
                 eventTime = df.events[i].When;
                 item.SubItems.Add(eventTime.ToString("hh:mm tt"));
                 item.SubItems.Add(df.events[i].Name);
                 item.SubItems.Add(df.events[i].Description);
                 listView.Items.AddRange(new ListViewItem[] { item });
-                //Button edit = new Button()=-
-                //is.Controls.Add(edit);
                 AddButtons(i, df, listView);
             }
 
@@ -69,7 +60,7 @@ namespace Calendar
             newEdit.Font = new Font(newEdit.Font.FontFamily, 6);
             newEdit.Location = new Point(310, 35 + eventNumber*18);
             this.Controls.Add(newEdit);
-            
+            newEdit.Click += (sender, EventArgs) => { newEdit_Click(sender, EventArgs, eventNumber, df, listView); };
 
             Button delete = new Button();
             delete.Width = 50;
@@ -91,5 +82,21 @@ namespace Calendar
             listView.Items.Insert(eventNumber, item);
             this.Controls.Add(listView);
         }
+
+
+        //ToDo handle changing the day of the event (RefreshDayFrame)
+        private void newEdit_Click(object sender, System.EventArgs e, int eventNumber, DayFrame df, ListView listView)
+        {
+            var f = new AddEventForm();
+            f.EventAdded += new Action<DateTime>(blankMethod);
+            f.EventName = df.events[eventNumber].Name;
+            f.EventDesc = df.events[eventNumber].Description;
+            f.EventTime = df.events[eventNumber].When;
+            sql_class.DeleteAppointment(df.events[eventNumber]);
+            this.Close();
+            f.ShowDialog();
+        }
+
+        private void blankMethod(DateTime date) { }
     }
 }
