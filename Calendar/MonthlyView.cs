@@ -151,20 +151,7 @@ namespace Calendar
         // so they are still not implemented - Brad
         private void RefreshDayFrame(DayFrame df, DateTime date, bool enabled, bool highlighted)
         {
-            df.ClearEvents();
-            List<Event> events = sql_class.GetEvents(date);
-            List<Project> proj = sql_class.GetProjects(date);
-            List<Event> SortedEvents = events.OrderBy(o => o.When).ToList();    //sorts events by Date
-            for (int k = 0; k < events.Count; k++)
-            {
-                df.AddEvent(SortedEvents[k]);
-                
-            }
-            for (int k = 0; k < proj.Count; k++)
-            {
-                df.AddProject(proj[k]);
-
-            }
+            df.RefreshDay(date);
             
         }
 
@@ -209,7 +196,7 @@ namespace Calendar
         private void btnAddProj_Click(object sender, EventArgs e)
         {
             var f = new AddProjectForm();
-            //f.EventAdded += new Action<DateTime>(RefreshDayFrame);
+            f.ProjectAdded += new Action<object>((object o) => { SetMonth(current); });
             f.ShowDialog();
         }
 

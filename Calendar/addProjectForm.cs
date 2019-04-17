@@ -13,6 +13,7 @@ namespace Calendar
     public partial class AddProjectForm : Form
     {
 
+        public event Action<object> ProjectAdded;
 
         public AddProjectForm()
         {
@@ -43,7 +44,8 @@ namespace Calendar
                 }
                 Project p = new Project(ProjectNameTextBox.Text, start, end, ColorBtn.BackColor, ProjectDescriptionTextBox.Text);
                 sql_class.AddProject(p);
-                
+
+                if (ProjectAdded != null) { ProjectAdded(null); }
                 this.Close();
             }
         }

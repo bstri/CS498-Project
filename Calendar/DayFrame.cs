@@ -16,6 +16,8 @@ namespace Calendar
         public TableLayoutPanel eventList;
         public TableLayoutPanel projectList;
 
+        public DateTime Date;
+
         public DayFrame()
         {
             Dock = DockStyle.Fill;
@@ -50,7 +52,7 @@ namespace Calendar
             projectList.MouseClick += new MouseEventHandler((sender, e) => { OnMouseClick(e); }); // propagate mouse click to dayframe
 
             // expand this day when clicked
-            this.MouseClick += new MouseEventHandler((sender, e) => { expandDay(this); });
+            this.MouseClick += new MouseEventHandler((sender, e) => { expandDay(); });
         }
 
         private int _dayNumber;
@@ -105,7 +107,7 @@ namespace Calendar
             projectList.Controls.Add(l);
         }
 
-        public void ClearEvents()
+        private void clearEvents()
         {
             eventLabels.Clear();
             events.Clear();
@@ -117,29 +119,43 @@ namespace Calendar
             eventList.RowCount = 1;
         }
 
-        private void expandDay(DayFrame df)
+        private void clearProjects()
+        {
+            projects.Clear();
+            projectList.Controls.Clear();
+            for (int c = 1; c < projectList.ColumnStyles.Count; c++)
+                projectList.ColumnStyles.RemoveAt(c);
+            projectList.ColumnCount = 1;
+        }
+
+        private void expandDay()
         {
             //Debug.WriteLine("Day clicked");
             //Debug.WriteLine(df.DayNumber);
             if (events.Count == 0)
                 return;
-            var f = new DayViewForm(df);
+            var f = new DayViewForm(this);
 
             f.ShowDialog();
-            refreshDay(df);
+            RefreshDay(Date);
 
         }
 
-        public void refreshDay(DayFrame df)
+        public void RefreshDay(DateTime date)
         {
-            DateTime date;
-            date = df.events[0].When;
-            df.ClearEvents();
+            clearEvents();
             List<Event> events = sql_class.GetEvents(date);
             List<Event> SortedEvents = events.OrderBy(o => o.When).ToList();    //sorts events by Date
             for (int k = 0; k < events.Count; k++)
             {
-                df.AddEvent(SortedEvents[k]);
+                AddEvent(SortedEvents[k]);
+
+            }
+            clearProjects();
+            List<Project> proj = sql_class.GetProjects(date);
+            for (int k = 0; k < proj.Count; k++)
+            {
+                AddProject(proj[k]);
 
             }
         }
