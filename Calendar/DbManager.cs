@@ -143,13 +143,13 @@ namespace Calendar
 
             foreach(sql_row row in ret_list)
             {
-                Console.WriteLine(row.apt_day);
-                Console.WriteLine(row.apt_month);
-                Console.WriteLine(row.apt_year);
-                Console.WriteLine(row.apt_time);
+                //Console.WriteLine(row.apt_day);
+                //Console.WriteLine(row.apt_month);
+                //Console.WriteLine(row.apt_year);
+                //Console.WriteLine(row.apt_time);
 
                 tmpString = (row.apt_day.ToString() + "-" + row.apt_month.ToString() + "-" + row.apt_year.ToString() + " " + row.apt_time.ToString());
-                Console.WriteLine(tmpString);
+                //Console.WriteLine(tmpString);
 
                 DateTime dtmp = DateTime.ParseExact(tmpString, "d-M-yyyy HH:mm", CultureInfo.InvariantCulture);
                 Event e = new Event(row.apt_name, dtmp, row.desc);
@@ -185,7 +185,7 @@ namespace Calendar
 
         public static List<Project> GetProjects(DateTime d)
         {
-            Console.WriteLine("hello");
+            //Console.WriteLine("hello");
             return getProjects(dbFileName, d);
         }
 

@@ -41,9 +41,8 @@ namespace Calendar
                     MessageBox.Show("Please enter valid dates!");
                     return;
                 }
-                //todo add the project to the database
-                //Event newEvent = new Event(EventNameTextBox.Text, combined, EventDescriptionTextBox.Text);
-                //sql_class.AddEvent(newEvent);
+                Project p = new Project(ProjectNameTextBox.Text, start, end, ColorBtn.BackColor, ProjectDescriptionTextBox.Text);
+                sql_class.AddProject(p);
                 
                 this.Close();
             }

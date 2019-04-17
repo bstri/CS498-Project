@@ -14,6 +14,7 @@ namespace Calendar
         private Label dayLabel;
 
         public TableLayoutPanel eventList;
+        public TableLayoutPanel projectList;
 
         public DayFrame()
         {
@@ -37,6 +38,16 @@ namespace Calendar
             };
             Controls.Add(eventList);
             eventList.MouseClick += new MouseEventHandler((sender, e) => { OnMouseClick(e); }); // propagate mouse click to dayframe
+
+            projectList = new TableLayoutPanel()
+            {
+                RowCount = 1,
+                ColumnCount = 1,
+                Location = new Point(20, 0),
+                Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom,
+            };
+            Controls.Add(projectList);
+            projectList.MouseClick += new MouseEventHandler((sender, e) => { OnMouseClick(e); }); // propagate mouse click to dayframe
 
             // expand this day when clicked
             this.MouseClick += new MouseEventHandler((sender, e) => { expandDay(this); });
@@ -78,9 +89,20 @@ namespace Calendar
             eventLabels.Add(e, l);
         }
 
+        public List<Project> projects = new List<Project>();
         public void AddProject(Project p)
         {
+            projects.Add(p);
 
+            Label l = new Label()
+            {
+                Size = new Size(10, 10),
+                BackColor = p.Color,
+            };
+
+            projectList.ColumnCount++;
+            projectList.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 12));
+            projectList.Controls.Add(l);
         }
 
         public void ClearEvents()
@@ -97,8 +119,10 @@ namespace Calendar
 
         private void expandDay(DayFrame df)
         {
-            Debug.WriteLine("Day clicked");
+            //Debug.WriteLine("Day clicked");
             //Debug.WriteLine(df.DayNumber);
+            if (events.Count == 0)
+                return;
             var f = new DayViewForm(df);
 
             f.ShowDialog();
