@@ -43,7 +43,7 @@ namespace Calendar
                     return;
                 }
                 Project p = new Project(ProjectNameTextBox.Text, start, end, ColorBtn.BackColor, ProjectDescriptionTextBox.Text);
-                sql_class.AddProject(p);
+                SqlClass.AddProject(p);
 
                 if (ProjectAdded != null) { ProjectAdded(null); }
                 this.Close();

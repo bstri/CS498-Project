@@ -84,7 +84,7 @@ namespace Calendar
         //Remove event clicked from database and GUI
         private void delete_Click(object sender, System.EventArgs e, int eventNumber, DayFrame df, ListView listView)
         {
-            sql_class.DeleteAppointment(df.events[eventNumber]);    //delete from database
+            SqlClass.DeleteAppointment(df.events[eventNumber]);    //delete from database
             listView.Items.RemoveAt(eventNumber);
             ListViewItem item = new ListViewItem("", 0);
             listView.Items.Insert(eventNumber, item);
@@ -101,7 +101,7 @@ namespace Calendar
             f.EventName = df.events[eventNumber].Name;
             f.EventDesc = df.events[eventNumber].Description;
             f.EventTime = df.events[eventNumber].When;
-            sql_class.DeleteAppointment(df.events[eventNumber]);
+            SqlClass.DeleteAppointment(df.events[eventNumber]);
             this.Close();
             f.ShowDialog();
         }

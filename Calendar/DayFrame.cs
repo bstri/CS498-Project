@@ -149,7 +149,7 @@ namespace Calendar
         public void RefreshDay(DateTime date)
         {
             clearEvents();
-            List<Event> events = sql_class.GetEvents(date);
+            List<Event> events = SqlClass.GetEvents(date);
             List<Event> SortedEvents = events.OrderBy(o => o.When).ToList();    //sorts events by Date
             for (int k = 0; k < events.Count; k++)
             {
@@ -157,7 +157,7 @@ namespace Calendar
 
             }
             clearProjects();
-            List<Project> proj = sql_class.GetProjects(date);
+            List<Project> proj = SqlClass.GetProjects(date);
             for (int k = 0; k < proj.Count; k++)
             {
                 AddProject(proj[k]);
