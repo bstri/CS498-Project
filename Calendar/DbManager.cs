@@ -11,7 +11,7 @@ using System.Diagnostics;
 namespace Calendar
 {
     //This is simply a class to hold the results of a query to get an appointment
-    //At this point is simply a storage class with get/set methods.
+    //This is really just a storage class with get/set methods.
     public class SqlRow
     {
         public SqlRow() { }
@@ -36,6 +36,8 @@ namespace Calendar
 
     }
 
+    //This is a similar idea to what is above, except that this is for the projects
+    //rather than the appointments.
     public class ProjectRow
     {
         public ProjectRow() { }
@@ -69,9 +71,18 @@ namespace Calendar
     //This is the meat of the DB manager.
     public class SqlClass
     {
+
+        //This is the only place we change the db file location
+        //as it is important to be consistent across all of our methods.
+        //Store it in AppData because why not.
         private static readonly string dbFileName = "C:\\Users\\" + Environment.UserName + "\\AppData\\Calendar_db.sqlite";
         private static readonly string testDBFileName = "C:\\Users\\" + Environment.UserName + "\\AppData\\test_db.sqlite";
 
+
+        //Method meant to initialize the database.
+        //Should be noted that it doesn't check to make sure the contents of the database are
+        //what we expect, so if for instance the projects table is deleted but the database
+        //still exists, this won't fix it and everything will be broken.
         private static void initializeDB(string dbFile)
         {
  
@@ -119,6 +130,8 @@ namespace Calendar
 
         private static void destroyDB(string dbFile)
         {
+            //Do a simple check here using System.IO
+            //and delete the database if we find it.
             if (System.IO.File.Exists(dbFile))
             {
                 System.IO.File.Delete(dbFile);
@@ -135,6 +148,8 @@ namespace Calendar
             destroyDB(testDBFileName);
         }
 
+        //This method takes the results from getAppointments and turns the SqlRow objects
+        //into Event objects for the calendar to use.
         private static List<Event> getEvents(string dbFile, DateTime d)
         {
             List<Event> events = new List<Event>();
@@ -143,14 +158,7 @@ namespace Calendar
 
             foreach(SqlRow row in returnList)
             {
-                //Console.WriteLine(row.apt_day);
-                //Console.WriteLine(row.apt_month);
-                //Console.WriteLine(row.apt_year);
-                //Console.WriteLine(row.apt_time);
-
                 tmpString = (row.apt_day.ToString() + "-" + row.apt_month.ToString() + "-" + row.apt_year.ToString() + " " + row.apt_time.ToString());
-                //Console.WriteLine(tmpString);
-
                 DateTime dtmp = DateTime.ParseExact(tmpString, "d-M-yyyy HH:mm", CultureInfo.InvariantCulture);
                 Event e = new Event(row.apt_name, dtmp, row.desc);
                 events.Add(e);
@@ -159,6 +167,8 @@ namespace Calendar
             return events;
         }
 
+        //Same idea as above, except for projects instead of appointments.
+        //Turns them into Project objects for the calendar to use.
         private static List<Project> getProjects(string dbFile, DateTime d)
         {
             List<Project> projects = new List<Project>();
@@ -185,7 +195,6 @@ namespace Calendar
 
         public static List<Project> GetProjects(DateTime d)
         {
-            //Console.WriteLine("hello");
             return getProjects(dbFileName, d);
         }
 
@@ -204,7 +213,6 @@ namespace Calendar
         private static bool addProject(string dbFile, Project p)
         {
             int retval = 0;
-            //insertProject(string dbFile, string name, int startYear, int startMonth, int startDay, int endYear, int endMonth, int endDay, string desc)
             retval = insertProject(dbFile, p.Name, p.Start.Year, p.Start.Month, p.Start.Day, p.End.Year, p.End.Month, p.End.Day, p.Color.A, p.Color.R, p.Color.G, p.Color.B, p.Description); //p.When.Year, e.When.Month, e.When.Day, e.When.ToString("hh:mm"), e.Description);
             return retval == 1;
         }
@@ -269,7 +277,6 @@ namespace Calendar
 
         }
 
-        //todo: figure out how we want to handle projects
         private static List<ProjectRow> getProjs(string dbFile, int myYear, int myMonth, int myDay)
         {
             SQLiteConnection calDbConnection;
