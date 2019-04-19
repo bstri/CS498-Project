@@ -147,14 +147,14 @@ namespace Calendar
             f.ShowDialog();
         }
 
-        //I don't see the reason to have enabled and highlighted as parameters here
-        // so they are still not implemented - Brad
+        //Given dayFrame and date calls appropriate function in DayFrame
         private void RefreshDayFrame(DayFrame df, DateTime date, bool enabled, bool highlighted)
         {
             df.RefreshDay(date);
             
         }
 
+        //Given a date to refresh, finds the dayFrame to access RefreshDay function
         private void RefreshDayFrame(DateTime date)
         {
             DayFrame d = dayFrames[0];

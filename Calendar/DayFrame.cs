@@ -133,19 +133,19 @@ namespace Calendar
             projectList.ColumnCount = 1;
         }
 
+        // Opens a new DayViewForm for the DayFrame Clicked
         private void expandDay()
         {
-            //Debug.WriteLine("Day clicked");
-            //Debug.WriteLine(df.DayNumber);
             if (events.Count == 0)
                 return;
-            var f = new DayViewForm(this);
+            var f = new DayViewForm(this); 
 
             f.ShowDialog();
             RefreshDay(Date);
 
         }
 
+        //Clears events from a view and re-adds them to update the GUI with changes to the database
         public void RefreshDay(DateTime date)
         {
             clearEvents();
