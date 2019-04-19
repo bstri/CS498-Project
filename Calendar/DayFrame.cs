@@ -9,13 +9,16 @@ using System.Diagnostics;
 
 namespace Calendar
 {
+    // GUI class that stores all the information relating to a single day
     public class DayFrame : Panel
     {
-        private Label dayLabel;
+        private Label dayLabel; // label that shows the day number
 
+        // controls for storing gui elements related to events and projects
         public TableLayoutPanel eventList;
         public TableLayoutPanel projectList;
 
+        // date of this dayframe
         public DateTime Date;
 
         public DayFrame()
@@ -70,6 +73,7 @@ namespace Calendar
 
         public List<Event> events = new List<Event>();
         private Dictionary<Event, Label> eventLabels = new Dictionary<Event, Label>();
+        // create a label with the event name
         public void AddEvent(Event e)
         {
             events.Add(e);
@@ -92,6 +96,7 @@ namespace Calendar
         }
 
         public List<Project> projects = new List<Project>();
+        // create a colored block with the project's color on it
         public void AddProject(Project p)
         {
             projects.Add(p);

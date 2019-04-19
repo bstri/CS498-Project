@@ -11,6 +11,7 @@ using System.Windows.Forms;
 
 namespace Calendar
 {
+    // form that allows user to enter in an event
     public partial class AddEventForm : Form
     {
         public event Action<DateTime> EventAdded;
