@@ -60,7 +60,7 @@ namespace Calendar
             DateTime time = EventTimePicker.Value;
             DateTime combined = new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, 0);
             Event newEvent = new Event(EventNameTextBox.Text, combined, EventDescriptionTextBox.Text);
-            sql_class.AddEvent(newEvent);
+            SqlClass.AddEvent(newEvent);
             if (EventAdded != null) { EventAdded(combined); }
             
             //EventAdded?.Invoke(combined);

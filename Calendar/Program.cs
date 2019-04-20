@@ -14,7 +14,7 @@ namespace Calendar
         [STAThread]
         static void Main()
         {
-            sql_class.InitializeDB();
+            SqlClass.InitializeDB();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             MonthlyView mv = new MonthlyView();

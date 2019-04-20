@@ -72,6 +72,7 @@ namespace Calendar
             string mName = getMonthName(dayInMonth);
             int year = getYear(dayInMonth);
             int mLen = getMonthLength(dayInMonth);
+            int myMonth = 0;
             int dayOfWeek = getFirstDayOfMonth(dayInMonth);
             int prevMLen = getPreviousMonthLength(dayInMonth);
            
@@ -113,8 +114,19 @@ namespace Calendar
                 d = dayFrames[i];
                 d.DayNumber = j;
                 d.Enabled = false;
-                DateTime date = new DateTime(year, dayInMonth.Month + 1, j);
+                
+                //This bit is to help year switching
+                if (dayInMonth.Month == 12)
+                {
+                    myMonth = 0;
+                } else
+                {
+                    myMonth = dayInMonth.Month;
+                }
+
+                DateTime date = new DateTime(year, myMonth + 1, j);
                 d.Date = date;
+
                 RefreshDayFrame(d, date, d.Enabled, false);
                 j++;
             }
@@ -124,7 +136,14 @@ namespace Calendar
                 d = dayFrames[i];
                 d.DayNumber = j;
                 d.Enabled = false;
-                DateTime date = new DateTime(year, dayInMonth.Month - 1, j);
+                if (dayInMonth.Month == 1)
+                {
+                    myMonth = 13;
+                } else
+                {
+                    myMonth = dayInMonth.Month;
+                }
+                DateTime date = new DateTime(year, myMonth - 1, j);
                 d.Date = date;
                 RefreshDayFrame(d, date, d.Enabled, false);
                 j--;
