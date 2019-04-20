@@ -142,7 +142,6 @@ namespace Calendar
 
             f.ShowDialog();
             RefreshDay(Date);
-
         }
 
         //Clears events from a view and re-adds them to update the GUI with changes to the database

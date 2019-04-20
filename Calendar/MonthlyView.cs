@@ -103,6 +103,7 @@ namespace Calendar
                 d.Enabled = true;
 
                 DateTime date = new DateTime(year, dayInMonth.Month, j);
+                d.Date = date;
                 RefreshDayFrame(d, date, d.Enabled, highlighted);
                 j++;
             }
@@ -113,6 +114,7 @@ namespace Calendar
                 d.DayNumber = j;
                 d.Enabled = false;
                 DateTime date = new DateTime(year, dayInMonth.Month + 1, j);
+                d.Date = date;
                 RefreshDayFrame(d, date, d.Enabled, false);
                 j++;
             }
@@ -123,6 +125,7 @@ namespace Calendar
                 d.DayNumber = j;
                 d.Enabled = false;
                 DateTime date = new DateTime(year, dayInMonth.Month - 1, j);
+                d.Date = date;
                 RefreshDayFrame(d, date, d.Enabled, false);
                 j--;
             }
