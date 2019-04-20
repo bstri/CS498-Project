@@ -21,7 +21,7 @@ namespace Calendar
         public MonthlyView()
         {
             InitializeComponent();
-
+            //Makes the grid that the calendar is represented on
             gridSize = DayGrid.ColumnCount * DayGrid.RowCount;
             current = DateTime.Now;
             dayFrames = new DayFrame[gridSize];
@@ -38,7 +38,7 @@ namespace Calendar
             }
             SetMonth(current);
         }
-
+        //Gets the current day information
         private int getYear(DateTime d)
         {
             return d.Year;
@@ -59,6 +59,7 @@ namespace Calendar
             string last = lastDay.ToString("dd");
             return int.Parse(last);
         }
+        //Ges the last month length to fill in the first bit of space of the calendar
         private int getPreviousMonthLength(DateTime d)
         {
             var monthStart = new DateTime(d.Year, d.Month, 1);
@@ -66,7 +67,7 @@ namespace Calendar
             int prevLen = int.Parse(prevMonthEnd.ToString("dd"));
             return prevLen;
         }
-
+        //Establish the current date
         public void SetMonth(DateTime dayInMonth)
         {
             string mName = getMonthName(dayInMonth);
@@ -149,13 +150,13 @@ namespace Calendar
                 j--;
             }
         }
-
+        //Switches to next month
         private void NextMonthButton_Click(object sender, EventArgs e)
         {
             current = current.AddMonths(1);
             SetMonth(current);
         }
-
+        //Switches to last month
         private void PreviousMonthButton_Click(object sender, EventArgs e)
         {
             current = current.AddMonths(-1);
@@ -214,7 +215,7 @@ namespace Calendar
                 RefreshDayFrame(d, date, d.Enabled, highlighted);
             }
         }
-
+        //Creates form to allow user to input information about project
         private void btnAddProj_Click(object sender, EventArgs e)
         {
             var f = new AddProjectForm();
